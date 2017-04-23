@@ -5,32 +5,32 @@
   <object class="GtkImage" id="img_bottom_left">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../res/animals/chim.png</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="img_bottom_right">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../res/animals/bo_cau.png</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="img_center_left">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../res/animals/gau.png</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="img_center_right">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../res/animals/ran.png</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="img_top_left">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../res/animals/ngua_van.png</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="img_top_right">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../res/animals/tiger.png</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
@@ -112,7 +112,7 @@
                 <property name="can_focus">False</property>
                 <property name="xpad">10</property>
                 <property name="ypad">10</property>
-                <property name="pixbuf">../res/animals/cho_soi.png</property>
+                <property name="stock">gtk-missing-image</property>
               </object>
               <packing>
                 <property name="expand">True</property>

@@ -1,5 +1,5 @@
 # change application name here (executable output name)
-TARGET=rpi_gtk_kiosk
+TARGET=child_app
 
 # compiler
 CC=gcc
