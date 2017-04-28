@@ -3,6 +3,8 @@
 #include <glib.h>
 #include <string.h>
 #include <wiringPi.h>
+#include <wiringSerial.h>
+#include <errno.h>
 //#include <pthread.h>
 
 #define IMAGE_MAX_COUNT 83
@@ -37,6 +39,30 @@ int main(int argc, char *argv[])
 
 	wiringPiSetup();
 
+	gint fd;	
+	if((fd = serialOpen("/dev/ttyAMA0", 9600)) < 0)
+	{
+		printf("error!");
+		fprintf(stderr, "error: %s\n", strerror(errno));
+		return 1;
+	}
+	
+	for(;;)
+	{
+		while((serialDataAvail(fd)))
+		{
+			printf("%d", serialGetchar(fd));
+			//printf("%d", 1);
+			//serialPuts(fd,"hosjiu");
+			//printf("...\n");
+			delay(500);
+		}
+		
+		printf("\n...\n");
+		delay(2000);
+	}
+
+/*
 	gint p;
 	for(p=0; p<6; p++)
 	{
@@ -70,8 +96,9 @@ int main(int argc, char *argv[])
 		free(button_image_id[i]);
 		free(button_glade_id[i]);
 	}
-
+*/
 	return 0;
+
 }
 
 gboolean display_default_window()
