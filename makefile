@@ -18,12 +18,13 @@ GTKLIB=`pkg-config --cflags --libs gtk+-3.0`
 
 # linker
 LD=gcc
-LDFLAGS=$(PTHREAD) $(GTKLIB) -export-dynamic -lX11
+LDFLAGS=$(PTHREAD) $(GTKLIB) -L/usr/local/lib -export-dynamic -lX11
+LDLIBS= -lwiringPi
 
 OBJS=    main.o
 
 all: $(OBJS)
-	$(LD) -o $(TARGET) $(OBJS) $(LDFLAGS)
+	$(LD) -o $(TARGET) $(OBJS) $(LDFLAGS) $(LDLIBS)
     
 main.o: src/main.c
 	$(CC) -c $(CCFLAGS) src/main.c $(GTKLIB) -o main.o

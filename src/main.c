@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
-#include <pthread.h>
+#include <wiringPi.h>
+//#include <pthread.h>
 
 #define IMAGE_MAX_COUNT 83
 
@@ -34,10 +35,13 @@ struct _Button
 int main(int argc, char *argv[])
 {
 
-	for(gint i=0; i<6; i++)
+	wiringPiSetup();
+
+	gint p;
+	for(p=0; p<6; p++)
 	{
-		button_glade_id[i] = (char *)malloc(50*sizeof(char));
-		button_image_id[i] = (char *)malloc(50*sizeof(char));
+		button_glade_id[p] = (gchar *)malloc(50*sizeof(gchar));
+		button_image_id[p] = (gchar *)malloc(50*sizeof(gchar));
 	}
 	
 	strcpy(button_glade_id[0], "btn_top_left");
@@ -56,11 +60,12 @@ int main(int argc, char *argv[])
 
 	gtk_init(&argc, &argv);
 
-	g_timeout_add(50, (GSourceFunc)display_default_window, NULL);
+	g_timeout_add(1,(GSourceFunc)display_default_window, NULL);
 
 	gtk_main();
-
-	for(gint i=0; i<6; i++)
+	
+	gint i;
+	for(i=0; i<6; i++)
 	{
 		free(button_image_id[i]);
 		free(button_glade_id[i]);
@@ -79,7 +84,8 @@ gboolean display_default_window()
 
 	Button *arr_button[6];
 
-	for(gint i=0; i<6; i++)
+	gint i;
+	for(i=0; i<6; i++)
 	{
 		arr_button[i] = g_slice_new(Button);
 		arr_button[i]->id = i+1;
@@ -93,10 +99,11 @@ gboolean display_default_window()
 	window_default = gtk_builder_get_object(builder, "window_1");
 
 	/*Anh xa den cac doi tuong o ben glade*/
-	for(gint i=0; i<6; i++)
+	gint m;
+	for(m=0; m<6; m++)
 	{
-		arr_button[i]->button = GTK_WIDGET(gtk_builder_get_object(builder, button_glade_id[i]));
-		arr_button[i]->image = GTK_WIDGET(gtk_builder_get_object(builder, button_image_id[i]));
+		arr_button[m]->button = GTK_WIDGET(gtk_builder_get_object(builder, button_glade_id[m]));
+		arr_button[m]->image = GTK_WIDGET(gtk_builder_get_object(builder, button_image_id[m]));
 	}
 	origin_image = GTK_WIDGET(gtk_builder_get_object(builder, "origin_image"));
 
@@ -109,7 +116,8 @@ gboolean display_default_window()
 	do
 	{
 		result_img_id = g_random_int_range(1, IMAGE_MAX_COUNT);
-		for(int i=0; i<IMAGE_MAX_COUNT; i++)
+		gint i;
+		for(i=0; i<IMAGE_MAX_COUNT; i++)
 		{
 			if( (img_id_not_use[i] != -1) && (img_id_not_use[i] == result_img_id) )
 			{
@@ -120,23 +128,24 @@ gboolean display_default_window()
 	}
 	while(same_image);
 	
-	gint i = 0;
-	while(img_id_not_use[i] != -1) i++;
+	gint q = 0;
+	while(img_id_not_use[q] != -1) q++;
 	
-	img_id_not_use[i] = result_img_id;
+	img_id_not_use[q] = result_img_id;
 
 	/*load anh vao cac button va origin_image*/
 	gint images_not_allowed[5] = {-1};
-	for(gint i=1; i<=6; i++)
+	gint o;
+	for(o=1; o<=6; o++)
 	{
 		gchar path[50];
 
 		/* Neu la nut dap an thi gan tam anh dap an vao de hien thi
 		  va hien thi luon origin image */
-		if( i == result_button_id )
+		if( o == result_button_id )
 		{
 			sprintf(path, "res/animals/%d.png", result_img_id);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[i-1]->image), path);
+			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
 			gtk_image_set_from_file(GTK_IMAGE(origin_image), path);
 		}
 
@@ -150,7 +159,8 @@ gboolean display_default_window()
 			do
 			{
 				rand_img = g_random_int_range(1,IMAGE_MAX_COUNT);
-				for(gint j=0; j<5; j++)
+				gint j;
+				for(j=0; j<5; j++)
 				{
 					if( (rand_img == images_not_allowed[j]) || (rand_img == result_img_id) )
 					{
@@ -160,8 +170,9 @@ gboolean display_default_window()
 				}
 			}
 			while(same_img);
-			
-			for(gint k=0; k<5; k++)
+				
+			gint k;
+			for(k=0; k<5; k++)
 			{
 				if(images_not_allowed[k] == -1)
 				{
@@ -171,13 +182,15 @@ gboolean display_default_window()
 			}
 
 			sprintf(path, "res/animals/%d.png", rand_img);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[i-1]->image), path);
+			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
 		}
 	}
 
+
 	/*Ket noi tin hieu cho cac button*/
-	for(gint i=0; i<6; i++)
-		g_signal_connect(G_OBJECT(arr_button[i]->button), "clicked", G_CALLBACK(show_result), &arr_button[i]);
+	gint l;
+	for(l=0; l<6; l++)
+		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &arr_button[l]);
 
 	gtk_window_fullscreen(GTK_WINDOW(window_default));
 	gtk_widget_show_all(GTK_WIDGET(window_default));
