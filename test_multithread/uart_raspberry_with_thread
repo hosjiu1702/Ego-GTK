@@ -13,6 +13,9 @@ in()
 }
 */
 
+GtkWidget *window;
+GtkWideget *button;
+
 gpointer
 receive_data_from_uart_pin(gpointer data)
 {
@@ -26,7 +29,7 @@ receive_data_from_uart_pin(gpointer data)
 	}
 }
 
-void
+int
 init_serial(gint baudrate)
 {
 	if((serial_port = serialOpen("/dev/ttyAMA0", baudrate)) < 0)
