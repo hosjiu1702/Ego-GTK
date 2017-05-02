@@ -24,7 +24,7 @@ static gboolean main_window_is_displayed = false;
 
 gboolean display_default_window();
 void on_window_1_destroy();
-void show_result();
+void show_result (GtkButton*, gpointer)
 void init_some_components();
 int init_serial(gint)
 
@@ -235,18 +235,20 @@ uart_transfer(gpointer data)
 	/*lap lien tuc de truyen va nhan du lieu*/
 	while(1)
 	{
+		/*Giai doan can nhan du lieu*/
 		if(main_window_is_displayed)
 		{
 			if(permit_iterate)
 			{
 				if(serialDataAvail)
 				{
-					gchar your_answer = serialGetchar(serial_port);
+					gint your_answer = serialGetchar(serial_port);
 					for(gint i=0; i<6; i++)
 					{
 						if(your_answer == arr_button[i]->id)
 						{
 							gtk_button_clicked(GTK_BUTTON(arr_button[i]->button));
+							break;
 						}
 					}
 					permit_iterate = false;
@@ -256,4 +258,18 @@ uart_transfer(gpointer data)
 	}
 }
 
-void show_result(){}
+void
+show_result(GtkButton *button, gpointer user_data)
+{
+	Button *input = (Button *)user_data; //dong nay can xem lai
+	if(/*ket qua dung*/)
+	{
+		/*hien thi ket qua dung o day*/
+
+		/*tra ket qua ve cho ben kia*/
+	}
+	else
+	{
+		/*hien thi ket qua sai o day*/
+	}
+}
