@@ -1,0 +1,66 @@
+#include <gtk/gtk.h>
+#include <wiringSerial.h>
+
+#define fd serial_port
+
+gint fd;
+
+/*
+void
+in()
+{
+	printf("\nhosjiu");
+}
+*/
+
+GtkWidget *window;
+GtkWideget *button;
+
+gpointer
+receive_data_from_uart_pin(gpointer data)
+{
+	while(1)
+	{
+		if(serialDataAvail(serial_port))
+		{
+			gint val_int = serialGetchar(serial_port);
+			printf("\nReceived Data: %d", val_int);
+		}
+	}
+}
+
+int
+init_serial(gint baudrate)
+{
+	if((serial_port = serialOpen("/dev/ttyAMA0", baudrate)) < 0)
+	{
+		printf("\nerror during init serial");
+		return 1;
+	}
+}
+
+int
+main(int argc,
+	char *argv[])
+{
+	init_serial(9600);
+
+	gtk_init(&argc,&argv);
+
+	window =GTK_WIDGET(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+	button = GTK_WIDGET(gtk_button_new());	
+
+	gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(button));
+
+	gtk_widget_show_all(GTK_WIDGET(window));
+
+	//g_signal_connect(G_OBJECT(button), "pressed", G_CALLBACK(in), NULL);
+
+
+	//Create a new thread run "parallel" along with main thread
+	g_thread_new("uart_thread", receive_data_from_uart_pin, NULL);
+
+	gtk_main();
+
+	return 0;
+}
