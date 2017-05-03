@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
-//#include <wiringPi.h>
-//#include <wiringSerial.h>
+#include <wiringPi.h>
+#include <wiringSerial.h>
 
 #define IMAGE_MAX_COUNT 83
-#define fd serial_port
 typedef struct _Button Button;
 
 struct _Button
@@ -22,6 +21,7 @@ enum
 	true
 };
 
+gint serial_port;
 /*-------------------------------------*/
 gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
 
@@ -43,7 +43,7 @@ gboolean is_waiting_for_press_button = false;
 void on_window_1_destroy();
 void show_result (GtkButton*, gpointer);
 void init_some_components();
-int init_serial(gint);
+gint init_serial(gint);
 gboolean transfer_uart(gpointer);
 void destroy_window_default(gpointer);
 void set_image_random();
@@ -60,8 +60,8 @@ GtkWidget *image_result;
 int main(int argc, char *argv[])
 {
 
-	//wiringPiSetup();
-	//init_serial(9600);
+	wiringPiSetup();
+	init_serial(9600);
 
 	/*Cap phat bo nho cho Button struct*/
 	gint i;
@@ -127,12 +127,12 @@ int main(int argc, char *argv[])
 	/*-----------------SAU KHI THOAT KHOI APPLICATION--------------------*/
 
 	/*Free memory*/
-	gint i;
-	for(i=0; i<6; i++)
+	gint r;
+	for(r=0; r<6; r++)
 	{
-		free(button_image_id[i]);
-		free(button_glade_id[i]);
-		g_slice_free(Button, &arr_button[i]);
+		free(button_image_id[r]);
+		free(button_glade_id[r]);
+		g_slice_free(Button, arr_button[r]);
 	}
 
 	/*Xoa di doi tuong builder*/
@@ -173,8 +173,8 @@ init_some_components()
 
 }
 
-/*
-int
+
+gint
 init_serial(gint baudrate)
 {
 	if((serial_port = serialOpen("/dev/ttyAMA0", baudrate)) < 0)
@@ -184,7 +184,7 @@ init_serial(gint baudrate)
 	}
 	else return 1;
 }
-*/
+
 
 void show_result(GtkButton *button, gpointer user_data)
 {
@@ -205,7 +205,7 @@ void show_result(GtkButton *button, gpointer user_data)
 
 	gint sound_id = result_img_id;
 	/*Neu dap an nhan duoc o day la dung*/
-	if(*your_answer = result_button_id)
+	if(*your_answer == result_button_id)
 	{
 		/*Thiet lap anh tick_icon cho image - Fullscreen*/
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
@@ -241,13 +241,13 @@ void show_result(GtkButton *button, gpointer user_data)
 	/*-------------------------Hien thi "cau hoi" tiep theo------------------------*/
 
 	/*hide window_2*/
-	gtk_widget_hide(GTK_WIDGET(window_2));
+	gtk_widget_hide(GTK_WIDGET(window_result));
 
 	/*Chon ngau nhien anh cho "cau hoi" ke tiep nay */
 	set_image_random();
 
 	/*Hien thi "cau hoi" va cho user tuong tac*/
-	gtk_widget_show_all(GTK_WIDGET(window_1));
+	gtk_widget_show_all(GTK_WIDGET(window_default));
 
 	/**/
 	window_default_is_displayed = false;
@@ -265,7 +265,7 @@ transfer_uart(gpointer user_data)
 			if(serialDataAvail(serial_port))
 			{
 				/*Gia tri nay tu 1->6*/
-				byte pressed_button_value = (byte)serialGetchar(serial_port);
+				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
