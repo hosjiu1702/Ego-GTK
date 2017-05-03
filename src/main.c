@@ -2,11 +2,25 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
-#include <wiringPi.h>
-#include <wiringSerial.h>
+//#include <wiringPi.h>
+//#include <wiringSerial.h>
 
 #define IMAGE_MAX_COUNT 83
 #define fd serial_port
+typedef struct _Button Button;
+
+struct _Button
+{
+	GtkWidget *button;
+	GtkWidget *image;
+	gint id;
+};
+
+enum
+{
+	false,
+	true
+};
 
 /*-------------------------------------*/
 gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
@@ -15,32 +29,39 @@ gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
 gchar* button_glade_id[6];
 gchar *button_image_id[6];
 /*----------------------*/
-gint result_img_id;
-gint result_button_id;
+gint result_img_id; // id cua nhung tam anh
+
+gint result_button_id; //id button chua dap an
+
 Button *arr_button[6];
+
 /*---------------------------------------*/
 /*---------------------*/
-static gboolean main_window_is_displayed = false;
+gboolean window_default_is_displayed = false;
+gboolean is_waiting_for_press_button = false;
 
-gboolean display_default_window();
 void on_window_1_destroy();
-void show_result (GtkButton*, gpointer)
+void show_result (GtkButton*, gpointer);
 void init_some_components();
-int init_serial(gint)
+int init_serial(gint);
+gboolean transfer_uart(gpointer);
+void destroy_window_default(gpointer);
+void set_image_random();
 
-typedef struct _Button Button;
-struct _Button
-{
-	GtkWidget *button;
-	GtkWidget *image;
-	gint id;
-};
+/*Cac bien con tro nay duoc dung suot chuong trinh*/
+/* 			dung de hien thi window_1 		*/
+GtkBuilder *builder;
+GtkWidget *window_default;
+GtkWidget *window_result;
+GtkWidget *image_default;
+GtkWidget *image_result;
+
 
 int main(int argc, char *argv[])
 {
 
-	wiringPiSetup();
-	init_serial(9600);
+	//wiringPiSetup();
+	//init_serial(9600);
 
 	/*Cap phat bo nho cho Button struct*/
 	gint i;
@@ -54,38 +75,17 @@ int main(int argc, char *argv[])
 
 	gtk_init(&argc, &argv);
 
-	display_question_window();
-
-	g_thread_new("uart_thread", uart_transfer, NULL);
-
-	gtk_main();
-/*	
-	gint i;
-	for(i=0; i<6; i++)
-	{
-		free(button_image_id[i]);
-		free(button_glade_id[i]);
-	}
-*/
-	return 0;
-
-}
-
-void
-display_question_window()
-{
-	GtkBuilder *builder;
-	GtkWidget *window_default;
-	GtkWidget *origin_image;
-
 	/*Pointer to window_1.glade file*/
 	builder = gtk_builder_new();
 	gtk_builder_add_from_file(builder, "glad/window_1.glade", NULL);
+	gtk_builder_add_from_file(builder, "glad/window_2.glade", NULL);
 
+	/*-----------------LAY CAC OBJECT O WINDOW_1--------------------*/
 	/*Get certain objects inside .glade file*/
 	window_default = GTK_WIDGET(gtk_builder_get_object(builder, "window_1"));
-	origin_image = GTK_WIDGET(gtk_builder_get_object(builder, "origin_image"));
+	image_default = GTK_WIDGET(gtk_builder_get_object(builder, "image_default"));
 	
+	/*Vung nho duoc cap phat nay se duoc dung xuyen suot chuong trinh*/
 	gint m;
 	for(m=0; m<6; m++)
 	{
@@ -93,7 +93,198 @@ display_question_window()
 		arr_button[m]->image = GTK_WIDGET(gtk_builder_get_object(builder, button_image_id[m]));
 	}
 
-	/*Chon mot trong 6 nut de dua dap an vao*/
+	/*-----------------LAY CAC OBJECT O WINDOW_2--------------------*/
+	window_result = GTK_WIDGET(gtk_builder_get_object(builder, "window_2"));
+	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
+
+	/*FUNCTION FOR RANDOM IMAGE*/
+	set_image_random();
+
+	/*Ket noi tin hieu cho cac button*/
+	gint l;
+	for(l=0; l<6; l++)
+		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
+
+	/*Thiet lap hien thi fullscreen*/
+	gtk_window_fullscreen(GTK_WINDOW(window_default));
+
+	/*Chi hien thi window_1*/
+	gtk_widget_show_all(GTK_WIDGET(window_default));
+
+	/*Van con su dung cho nhung lan ke tiep => comment dong ben duoi*/
+	/* g_object_unref(builder); */
+
+	window_default_is_displayed = true;
+	is_waiting_for_press_button = true;
+
+	/*Ham cho xu ly khi thuc hien xong viec hien thi window_default*/
+	g_idle_add_full(G_PRIORITY_DEFAULT_IDLE, transfer_uart, NULL, NULL);
+
+	/* g_thread_new("uart_thread", uart_transfer, NULL); */
+
+	gtk_main();
+
+	/*-----------------SAU KHI THOAT KHOI APPLICATION--------------------*/
+
+	/*Free memory*/
+	gint i;
+	for(i=0; i<6; i++)
+	{
+		free(button_image_id[i]);
+		free(button_glade_id[i]);
+		g_slice_free(Button, &arr_button[i]);
+	}
+
+	/*Xoa di doi tuong builder*/
+	g_object_unref(builder);
+
+	return 0;
+}
+
+
+void on_window_1_destroy()
+{
+	gtk_main_quit();
+}
+
+void
+init_some_components()
+{
+	gint p;
+	for(p=0; p<6; p++)
+	{
+		button_glade_id[p] = (gchar *)malloc(50*sizeof(gchar));
+		button_image_id[p] = (gchar *)malloc(50*sizeof(gchar));
+	}
+	
+	strcpy(button_glade_id[0], "btn_top_left");
+	strcpy(button_glade_id[1], "btn_center_left");
+	strcpy(button_glade_id[2], "btn_bottom_left");
+	strcpy(button_glade_id[3], "btn_top_right");
+	strcpy(button_glade_id[4], "btn_center_right");
+	strcpy(button_glade_id[5], "btn_bottom_right");
+
+	strcpy(button_image_id[0], "img_top_left");
+	strcpy(button_image_id[1], "img_center_left");
+	strcpy(button_image_id[2], "img_bottom_left");
+	strcpy(button_image_id[3], "img_top_right");
+	strcpy(button_image_id[4], "img_center_right");
+	strcpy(button_image_id[5], "img_bottom_right");
+
+}
+
+/*
+int
+init_serial(gint baudrate)
+{
+	if((serial_port = serialOpen("/dev/ttyAMA0", baudrate)) < 0)
+	{
+		printf("\nerror during init serial");
+		return 0;
+	}
+	else return 1;
+}
+*/
+
+void show_result(GtkButton *button, gpointer user_data)
+{
+	/*Xoa di window_default cu*/
+	/*---------khong nen destroy vi con dung cho viec hien thi lan sau o window_1---*/
+	//gtk_widget_destroy(GTK_WIDGET(window_default));
+
+	/*Giai phong bo nho da cap truoc do*/
+/*
+	for(gint i=0; i<6; i++)
+		g_slice_free(Button, &arr_button[i]);
+*/
+	/*An window_1*/
+	gtk_widget_hide(GTK_WIDGET(window_default));
+
+	/*Lay dap an cua user*/
+	gint *your_answer = (gint *)user_data;
+
+	gint sound_id = result_img_id;
+	/*Neu dap an nhan duoc o day la dung*/
+	if(*your_answer = result_button_id)
+	{
+		/*Thiet lap anh tick_icon cho image - Fullscreen*/
+		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
+		gtk_widget_show_all(GTK_WIDGET(window_result));
+
+		/*Gui tin hieu DUNG den arduino de phat nhac */
+		serialPutchar(serial_port, 1);
+		
+		/*gui sound-id dung cho viec am thanh tuong ung voi image*/
+		serialPutchar(serial_port, sound_id);
+
+		/*Tam dung 3s*/
+		g_usleep(3000000);
+	}
+	/*Neu dap an nhan duoc o day la sai*/
+	else
+	{
+		/*Hien thi hinh anh sai - Fullscreen*/
+		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png"); //o day moi chi hien thi duoc wrong icon
+		gtk_widget_show_all(GTK_WIDGET(window_result));
+
+		/*Gui tin hieu SAI den arduino de phat nhac */
+		serialPutchar(serial_port, 0);
+		
+		/*Tam dung 3s*/
+		g_usleep(3000000);
+
+	}
+	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
+	/*Xoa "cua so dap an"*/
+	//gtk_widget_destroy(GTK_WIDGET(window));
+
+	/*-------------------------Hien thi "cau hoi" tiep theo------------------------*/
+
+	/*hide window_2*/
+	gtk_widget_hide(GTK_WIDGET(window_2));
+
+	/*Chon ngau nhien anh cho "cau hoi" ke tiep nay */
+	set_image_random();
+
+	/*Hien thi "cau hoi" va cho user tuong tac*/
+	gtk_widget_show_all(GTK_WIDGET(window_1));
+
+	/**/
+	window_default_is_displayed = false;
+}
+
+/*Day la idle function nen se loop lien tuc*/
+gboolean
+transfer_uart(gpointer user_data)
+{
+
+		/*Neu dang cho nhan cho viec nhan nut*/
+		if(is_waiting_for_press_button)
+		{
+			/*Neu co du lieu den thi doc va phat tin hieu den button widget tuong ung*/
+			if(serialDataAvail(serial_port))
+			{
+				/*Gia tri nay tu 1->6*/
+				byte pressed_button_value = (byte)serialGetchar(serial_port);
+							
+				/* Gia lap su kien "clicked" voi button tuong ung*/
+				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
+
+				/*Vong lap idle sau se khong cho an nut nua - khong doc serial*/
+				is_waiting_for_press_button = false;
+			}
+		}
+
+	return G_SOURCE_CONTINUE;
+}
+
+/*
+ * Ham nay duoc thuc hien moi khi 
+ *	window_1 hien thi "cau hoi" moi
+ */
+void set_image_random()
+{
+	/*Chon mot trong 6 nut de dua DAP AN vao*/
 	result_button_id = g_random_int_range(1,7);
 
 	/*Chon mot anh ngau nhien de hien thi*/
@@ -118,7 +309,7 @@ display_question_window()
 	
 	img_id_not_use[q] = result_img_id;
 
-	/*load anh vao cac button va origin_image*/
+	/*load anh vao cac button va image_default*/
 	gint images_not_allowed[5] = {-1};
 	gint o;
 	for(o=1; o<=6; o++)
@@ -131,7 +322,7 @@ display_question_window()
 		{
 			sprintf(path, "res/animals/%d.png", result_img_id);
 			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
-			gtk_image_set_from_file(GTK_IMAGE(origin_image), path);
+			gtk_image_set_from_file(GTK_IMAGE(image_default), path);
 		}
 
 
@@ -171,105 +362,4 @@ display_question_window()
 		}
 	}
 
-	/*Ket noi tin hieu cho cac button*/
-	gint l;
-	for(l=0; l<6; l++)
-		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
-
-	gtk_window_fullscreen(GTK_WINDOW(window_default));
-	gtk_widget_show_all(GTK_WIDGET(window_default));
-
-	main_window_is_displayed = true;
-
-	g_object_unref(builder);
-}
-
-
-void on_window_1_destroy()
-{
-	gtk_main_quit();
-}
-
-void
-init_some_components()
-{
-	gint p;
-	for(p=0; p<6; p++)
-	{
-		button_glade_id[p] = (gchar *)malloc(50*sizeof(gchar));
-		button_image_id[p] = (gchar *)malloc(50*sizeof(gchar));
-	}
-	
-	strcpy(button_glade_id[0], "btn_top_left");
-	strcpy(button_glade_id[1], "btn_center_left");
-	strcpy(button_glade_id[2], "btn_bottom_left");
-	strcpy(button_glade_id[3], "btn_top_right");
-	strcpy(button_glade_id[4], "btn_center_right");
-	strcpy(button_glade_id[5], "btn_bottom_right");
-
-	strcpy(button_image_id[0], "img_top_left");
-	strcpy(button_image_id[1], "img_center_left");
-	strcpy(button_image_id[2], "img_bottom_left");
-	strcpy(button_image_id[3], "img_top_right");
-	strcpy(button_image_id[4], "img_center_right");
-	strcpy(button_image_id[5], "img_bottom_right");
-
-}
-
-int
-init_serial(gint baudrate)
-{
-	if((serial_port = serialOpen("/dev/ttyAMA0", baudrate)) < 0)
-	{
-		printf("\nerror during init serial");
-		return 0;
-	}
-	else return 1;
-}
-
-gpointer
-uart_transfer(gpointer data)
-{
-	static gboolean permit_iterate = true;
-
-	/*lap lien tuc de truyen va nhan du lieu*/
-	while(1)
-	{
-		/*Giai doan can nhan du lieu*/
-		if(main_window_is_displayed)
-		{
-			if(permit_iterate)
-			{
-				if(serialDataAvail)
-				{
-					gint your_answer = serialGetchar(serial_port);
-					for(gint i=0; i<6; i++)
-					{
-						if(your_answer == arr_button[i]->id)
-						{
-							gtk_button_clicked(GTK_BUTTON(arr_button[i]->button));
-							break;
-						}
-					}
-					permit_iterate = false;
-				}
-			}
-		}
-	}
-}
-
-void
-show_result(GtkButton *button, gpointer user_data)
-{
-	Button *input = (Button *)user_data; //dong nay can xem lai
-	if(/*ket qua dung*/)
-	{
-		/*hien thi ket qua dung o day*/
-
-		/*tra ket qua ve cho ben kia*/
-	}
-	else
-	{
-		/*hien thi ket qua sai o day*/
-	}
 }
