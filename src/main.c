@@ -217,7 +217,7 @@ void show_result(GtkButton *button, gpointer user_data)
 		serialPutchar(serial_port, sound_id);
 
 		/*Tam dung 3s*/
-		//g_usleep(3000000);
+		g_usleep(3000000);
 	}
 	/*Neu dap an nhan duoc o day la sai*/
 	else
@@ -230,7 +230,7 @@ void show_result(GtkButton *button, gpointer user_data)
 		serialPutchar(serial_port, 0);
 		
 		/*Tam dung 3s*/
-		//g_usleep(3000000);
+		g_usleep(3000000);
 
 	}
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
