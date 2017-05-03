@@ -243,7 +243,7 @@ void show_result(GtkButton *button, gpointer user_data)
 	//gtk_widget_hide(GTK_WIDGET(window_result));
 
 	/*Chon ngau nhien anh cho "cau hoi" ke tiep nay */
-//	set_image_random();
+	set_image_random();
 
 	/*Hien thi "cau hoi" va cho user tuong tac*/
 //	gtk_widget_show_all(GTK_WIDGET(window_default));
