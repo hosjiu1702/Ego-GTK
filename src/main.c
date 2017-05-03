@@ -214,7 +214,7 @@ void show_result(GtkButton *button, gpointer user_data)
 		//serialPutchar(serial_port, 1);
 		
 		/*gui sound-id dung cho viec am thanh tuong ung voi image*/
-		serialPutchar(serial_port, sound_id);
+		//serialPutchar(serial_port, sound_id);
 
 		/*Tam dung 3s*/
 		g_usleep(3000000);
