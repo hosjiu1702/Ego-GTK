@@ -187,7 +187,69 @@ init_serial(gint baudrate)
 
 void show_result(GtkButton *button, gpointer user_data)
 {
+	/*Xoa di window_default cu*/
+	/*---------khong nen destroy vi con dung cho viec hien thi lan sau o window_1---*/
+	//gtk_widget_destroy(GTK_WIDGET(window_default));
 
+	/*Giai phong bo nho da cap truoc do*/
+/*
+	for(gint i=0; i<6; i++)
+		g_slice_free(Button, &arr_button[i]);
+*/
+	/*An window_1*/
+	gtk_widget_hide(GTK_WIDGET(window_default));
+
+	/*Lay dap an cua user*/
+	gint *your_answer = (gint *)user_data;
+
+	gint sound_id = result_img_id;
+	/*Neu dap an nhan duoc o day la dung*/
+	if(*your_answer == result_button_id)
+	{
+		/*Thiet lap anh tick_icon cho image - Fullscreen*/
+		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
+		gtk_widget_show_all(GTK_WIDGET(window_result));
+
+		/*Gui tin hieu DUNG den arduino de phat nhac */
+		//serialPutchar(serial_port, 1);
+		
+		/*gui sound-id dung cho viec am thanh tuong ung voi image*/
+		serialPutchar(serial_port, sound_id);
+
+		/*Tam dung 3s*/
+		g_usleep(3000000);
+	}
+	/*Neu dap an nhan duoc o day la sai*/
+	else
+	{
+		/*Hien thi hinh anh sai - Fullscreen*/
+		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png"); //o day moi chi hien thi duoc wrong icon
+		gtk_widget_show_all(GTK_WIDGET(window_result));
+
+		/*Gui tin hieu SAI den arduino de phat nhac */
+		//serialPutchar(serial_port, 0);
+		
+		/*Tam dung 3s*/
+		g_usleep(3000000);
+
+	}
+	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
+	/*Xoa "cua so dap an"*/
+	//gtk_widget_destroy(GTK_WIDGET(window));
+
+	/*-------------------------Hien thi "cau hoi" tiep theo------------------------*/
+
+	/*hide window_2*/
+	gtk_widget_hide(GTK_WIDGET(window_result));
+
+	/*Chon ngau nhien anh cho "cau hoi" ke tiep nay */
+	set_image_random();
+
+	/*Hien thi "cau hoi" va cho user tuong tac*/
+	gtk_widget_show_all(GTK_WIDGET(window_default));
+
+	/**/
+	window_default_is_displayed = false;
 }
 
 /*Day la idle function nen se loop lien tuc*/
