@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 
 	/*Thiet lap hien thi fullscreen*/
 	gtk_window_fullscreen(GTK_WINDOW(window_default));
-	gtk_window_fullscreen(GTK_WIDGET(window_result));
+	gtk_window_fullscreen(GTK_WINDOW(window_result));
 
 	/*Chi hien thi window_1*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
@@ -249,7 +249,7 @@ void show_result(GtkButton *button, gpointer user_data)
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
 	/**/
-	window_default_is_displayed = false;
+	is_waiting_for_press_button = false;
 }
 
 /*Day la idle function nen se loop lien tuc*/
