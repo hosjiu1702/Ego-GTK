@@ -381,14 +381,14 @@ delete_func(gpointer user_data)
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
-		/*Chon mot trong 6 nut de dua DAP AN vao*/
+	/*Chon mot trong 6 nut de dua DAP AN vao*/
 	result_button_id = g_random_int_range(1,7);
 
 	/*Chon mot anh ngau nhien de hien thi*/
-/*	gboolean same_image = FALSE;
+	gboolean same_image = FALSE;
 	do
 	{
-		///*Chon ngau nhien mot tam anh (it's id)
+		/*Chon ngau nhien mot tam anh (it's id)*/
 		result_img_id = g_random_int_range(1, IMAGE_MAX_COUNT);
 		
 		gint i;
@@ -402,7 +402,7 @@ delete_func(gpointer user_data)
 		}
 	}
 	while(same_image);
-*/	
+	
 	gint q = 0;
 	while(img_id_not_use[q] != -1) q++;
 	
@@ -419,9 +419,9 @@ delete_func(gpointer user_data)
 		  va hien thi luon origin image */
 		if( o == result_button_id )
 		{
-			sprintf(path, "res/animals/%d.png", result_img_id);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
-			gtk_image_set_from_file(GTK_IMAGE(image_default), path);
+			//sprintf(path, "res/animals/%d.png", result_img_id);
+			//gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
+			//gtk_image_set_from_file(GTK_IMAGE(image_default), path);
 		}
 
 
@@ -456,11 +456,10 @@ delete_func(gpointer user_data)
 				}
 			}
 
-			sprintf(path, "res/animals/%d.png", rand_img);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
+			//sprintf(path, "res/animals/%d.png", rand_img);
+			//gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
 		}
 	}
-
 
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
