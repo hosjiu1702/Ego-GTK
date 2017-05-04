@@ -248,7 +248,6 @@ void show_result(GtkButton *button, gpointer user_data)
 
 	/*Hien thi "cau hoi" va cho user tuong tac*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
-	gtk_image_clear(GTK_IMAGE(image_result));
 
 	/**/
 //	is_waiting_for_press_button = false;
@@ -258,6 +257,7 @@ void show_result(GtkButton *button, gpointer user_data)
 gboolean
 transfer_uart(gpointer user_data)
 {
+	gtk_image_clear(GTK_IMAGE(image_result));
 
 		/*Neu dang cho nhan cho viec nhan nut*/
 		if(is_waiting_for_press_button)
