@@ -46,7 +46,7 @@ gint init_serial(gint);
 gboolean transfer_uart(gpointer);
 void destroy_window_default(gpointer);
 void set_image_random();
-gboolean delete_func(gpointer)
+gboolean delete_func(gpointer);
 
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
 /* 			dung de hien thi window_1 		*/
