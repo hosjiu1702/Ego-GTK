@@ -248,7 +248,6 @@ void show_result(GtkButton *button, gpointer user_data)
 
 	/*Hien thi "cau hoi" va cho user tuong tac*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
-	gtk_widget_hide(GTK_WIDGET(window_result));
 	gtk_image_clear(GTK_IMAGE(image_result));
 
 	/**/
