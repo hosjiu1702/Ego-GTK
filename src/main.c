@@ -379,6 +379,8 @@ delete_func(gpointer user_data)
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
+	set_image_random();
+
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
