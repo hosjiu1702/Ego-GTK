@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 	//gtk_window_fullscreen(GTK_WINDOW(window_result));
 
 	/*Chi hien thi window_1*/
-	gtk_widget_show_all(GTK_WIDGET(window_default));
+	gtk_widget_show(GTK_WIDGET(window_default));
 
 	/*Van con su dung cho nhung lan ke tiep => comment dong ben duoi*/
 	/* g_object_unref(builder); */
