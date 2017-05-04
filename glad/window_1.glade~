@@ -36,11 +36,9 @@
     <property name="can_focus">False</property>
     <signal name="destroy" handler="on_window_1_destroy" swapped="no"/>
     <child>
-      <object class="GtkBox" id="origin_box">
+      <object class="GtkEventBox" id="eventbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="homogeneous">True</property>
         <child>
           <object class="GtkBox" id="parent_box">
             <property name="visible">True</property>
@@ -110,7 +108,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="origin_image">
+              <object class="GtkImage" id="image_default">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xpad">10</property>
@@ -189,11 +187,6 @@
               </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
       </object>
     </child>

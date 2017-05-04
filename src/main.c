@@ -51,7 +51,6 @@ gboolean delete_func(gpointer);
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
 /* 			dung de hien thi window_1 		*/
 GtkBuilder *builder;
-GtkWidget *eventBox;
 GtkWidget *window_default;
 GtkWidget *window_result;
 GtkWidget *image_default;
@@ -85,7 +84,6 @@ int main(int argc, char *argv[])
 	/*Get certain objects inside .glade file*/
 	window_default = GTK_WIDGET(gtk_builder_get_object(builder, "window_1"));
 	image_default = GTK_WIDGET(gtk_builder_get_object(builder, "image_default"));
-	eventBox = GTK_WIDGET(gtk_builder_get_object(builder, "event_box"));
 	
 	/*Vung nho duoc cap phat nay se duoc dung xuyen suot chuong trinh*/
 	gint m;
@@ -99,12 +97,6 @@ int main(int argc, char *argv[])
 	window_result = GTK_WIDGET(gtk_builder_get_object(builder, "window_2"));
 	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
 
-
-	/*The below code fix Segmentation fault error*/
-	/*----------------*/
-	/*Capture button press (using for image widget)*/
-	gtk_widget_add_events(eventBox, GDK_BUTTON_PRESS_MASK);
-
 	/*FUNCTION FOR RANDOM IMAGE*/
 	set_image_random();
 
@@ -112,8 +104,7 @@ int main(int argc, char *argv[])
 	gint l;
 	for(l=0; l<6; l++)
 	{
-		//g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
-		g_signal_connect(G_OBJECT(eventBox), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
+		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
 	}
 
 	/*Thiet lap hien thi fullscreen*/
@@ -247,7 +238,6 @@ void show_result(GtkButton *button, gpointer user_data)
 	}
 
 	g_timeout_add(2000, delete_func, NULL);
-	set_image_random();
 
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
 	/*Xoa "cua so dap an"*/
@@ -388,6 +378,8 @@ delete_func(gpointer user_data)
 
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
+
+	set_image_random();
 
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
