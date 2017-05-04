@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 
 	/*Thiet lap hien thi fullscreen*/
 	gtk_window_fullscreen(GTK_WINDOW(window_default));
-	gtk_window_fullscreen(GTK_WINDOW(window_result));
+	//gtk_window_fullscreen(GTK_WINDOW(window_result));
 
 	/*Chi hien thi window_1*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
