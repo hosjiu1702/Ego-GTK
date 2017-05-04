@@ -23,7 +23,7 @@ enum
 const gint IMAGE_MAX_COUNT = 83;
 gint serial_port;
 /*-------------------------------------*/
-gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
+gint img_id_not_use[83] = {-1};
 
 /*---------------------------------------*/
 gchar *button_glade_id[6];
@@ -399,7 +399,7 @@ delete_func(gpointer user_data)
 		}
 	}
 	while(same_image);
-	
+
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
