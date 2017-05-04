@@ -207,6 +207,7 @@ void show_result(GtkButton *button, gpointer user_data)
 	if(*your_answer == result_button_id)
 	{
 		/*Thiet lap anh tick_icon cho image - Fullscreen*/
+		g_print("\ndung");
 		gtk_image_clear(GTK_IMAGE(image_result));
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
@@ -224,6 +225,7 @@ void show_result(GtkButton *button, gpointer user_data)
 	else
 	{
 		/*Hien thi hinh anh sai - Fullscreen*/
+		g_print("\nsai");
 		gtk_image_clear(GTK_IMAGE(image_result));
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png"); //o day moi chi hien thi duoc wrong icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
