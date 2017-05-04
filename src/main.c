@@ -5,7 +5,6 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
-#define IMAGE_MAX_COUNT 83
 typedef struct _Button Button;
 
 struct _Button
@@ -21,19 +20,20 @@ enum
 	true
 };
 
+const gint IMAGE_MAX_COUNT = 83;
 gint serial_port;
 /*-------------------------------------*/
-gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
+static gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
 
 /*---------------------------------------*/
-gchar* button_glade_id[6];
+gchar *button_glade_id[6];
 gchar *button_image_id[6];
 /*----------------------*/
-gint result_img_id; // id cua nhung tam anh
+static gint result_img_id; // id cua nhung tam anh
 
-gint result_button_id; //id button chua dap an
+static gint result_button_id; //id button chua dap an
 
-Button *arr_button[6];
+static Button *arr_button[6];
 
 /*---------------------------------------*/
 /*---------------------*/
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
 
 	/*FUNCTION FOR RANDOM IMAGE*/
-	set_image_random(NULL);
+	set_image_random();
 
 	/*Ket noi tin hieu cho cac button*/
 	gint l;
