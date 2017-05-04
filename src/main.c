@@ -40,7 +40,7 @@ Button *arr_button[6];
 gboolean is_waiting_for_press_button = false;
 
 void on_window_1_destroy();
-void show_result (GtkButton*, gpointer);
+void show_result (GtkWidget*, gpointer);
 void init_some_components();
 gint init_serial(gint);
 gboolean transfer_uart(gpointer);
@@ -370,8 +370,6 @@ void set_image_random()
 			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
 		}
 	}
-
-	return G_SOURCE_REMOVE;
 }
 
 gboolean
