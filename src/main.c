@@ -273,6 +273,7 @@ transfer_uart(gpointer user_data)
 			{
 				/*Gia tri nay tu 1->6*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
+				g_print(pressed_button_value);
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
@@ -387,7 +388,6 @@ delete_func(gpointer user_data)
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
 	set_image_random();
-	
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
