@@ -51,6 +51,7 @@ gboolean delete_func(gpointer);
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
 /* 			dung de hien thi window_1 		*/
 GtkBuilder *builder;
+GtkWidget *eventBox;
 GtkWidget *window_default;
 GtkWidget *window_result;
 GtkWidget *image_default;
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
 	/*Get certain objects inside .glade file*/
 	window_default = GTK_WIDGET(gtk_builder_get_object(builder, "window_1"));
 	image_default = GTK_WIDGET(gtk_builder_get_object(builder, "image_default"));
+	eventBox = GTK_WIDGET(gtk_builder_get_object(builder, "event_box"))
 	
 	/*Vung nho duoc cap phat nay se duoc dung xuyen suot chuong trinh*/
 	gint m;
@@ -97,19 +99,12 @@ int main(int argc, char *argv[])
 	window_result = GTK_WIDGET(gtk_builder_get_object(builder, "window_2"));
 	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
 
-	/*The below code fix Segmentation fault error*/
-	GtkWidget *eventBox;
-	eventBox = gtk_event_box_new();
-	gtk_container_add(GTK_CONTAINER(window_default), eventBox);
 
+	/*The below code fix Segmentation fault error*/
+	/*----------------*/
 	/*Capture button press (using for image widget)*/
 	gtk_widget_add_events(eventBox, GDK_BUTTON_PRESS_MASK);
 	g_signal_connect(G_OBJECT(eventBox), "button-press-event", G_CALLBACK(show_result), NULL);
-	gint u;
-	for(u=0; u<6; u++)
-	{
-		gtk_container_add(GTK_CONTAINER(eventBox), arr_button[u]->image);
-	}
 
 	/*FUNCTION FOR RANDOM IMAGE*/
 	set_image_random();
