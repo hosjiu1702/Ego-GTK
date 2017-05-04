@@ -121,6 +121,7 @@ int main(int argc, char *argv[])
 
 	/*Ham cho xu ly khi thuc hien xong viec hien thi window_default*/
 	g_idle_add_full(G_PRIORITY_DEFAULT_IDLE, transfer_uart, NULL, NULL);
+	g_timeout_add(1500, set_image_random, NULL);
 
 	/* g_thread_new("uart_thread", uart_transfer, NULL); */
 
@@ -380,8 +381,6 @@ delete_func(gpointer user_data)
 
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
-
-	//set_image_random();
 
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
