@@ -41,6 +41,7 @@ gboolean is_waiting_for_press_button = false;
 
 void on_window_1_destroy();
 void show_result (GtkButton*, gpointer);
+void show_result_2 (GtkButton*, gpointer);
 void init_some_components();
 gint init_serial(gint);
 gboolean transfer_uart(gpointer);
@@ -102,7 +103,11 @@ int main(int argc, char *argv[])
 	/*Ket noi tin hieu cho cac button*/
 	gint l;
 	for(l=0; l<6; l++)
+	{
 		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
+		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result_2), &(arr_button[l]->id));
+
+	}
 
 	/*Thiet lap hien thi fullscreen*/
 	gtk_window_fullscreen(GTK_WINDOW(window_default));
@@ -244,7 +249,7 @@ void show_result(GtkButton *button, gpointer user_data)
 	//gtk_widget_hide(GTK_WIDGET(window_result));
 
 	/*Chon ngau nhien anh cho "cau hoi" ke tiep nay */
-	set_image_random();
+	//set_image_random();
 
 	/*Hien thi "cau hoi" va cho user tuong tac*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
@@ -284,5 +289,87 @@ transfer_uart(gpointer user_data)
  */
 void set_image_random()
 {
-	g_print("alright ..");
+	/*Chon mot trong 6 nut de dua DAP AN vao*/
+	result_button_id = g_random_int_range(1,7);
+
+	/*Chon mot anh ngau nhien de hien thi*/
+	gboolean same_image = FALSE;
+	do
+	{
+		result_img_id = g_random_int_range(1, IMAGE_MAX_COUNT);
+		gint i;
+		for(i=0; i<IMAGE_MAX_COUNT; i++)
+		{
+			if( (img_id_not_use[i] != -1) && (img_id_not_use[i] == result_img_id) )
+			{
+				same_image = TRUE;
+				break;
+			}
+		}
+	}
+	while(same_image);
+	
+	gint q = 0;
+	while(img_id_not_use[q] != -1) q++;
+	
+	img_id_not_use[q] = result_img_id;
+
+	/*load anh vao cac button va image_default*/
+	gint images_not_allowed[5] = {-1};
+	gint o;
+	for(o=1; o<=6; o++)
+	{
+		gchar path[50];
+
+		/* Neu la nut dap an thi gan tam anh dap an vao de hien thi
+		  va hien thi luon origin image */
+		if( o == result_button_id )
+		{
+			sprintf(path, "res/animals/%d.png", result_img_id);
+			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
+			gtk_image_set_from_file(GTK_IMAGE(image_default), path);
+		}
+
+
+		/*Gan hinh ngau nhien cho cac button*/
+		else
+		{
+			gint rand_img;
+			gboolean same_img = FALSE;
+
+			do
+			{
+				rand_img = g_random_int_range(1,IMAGE_MAX_COUNT);
+				gint j;
+				for(j=0; j<5; j++)
+				{
+					if( (rand_img == images_not_allowed[j]) || (rand_img == result_img_id) )
+					{
+						same_img = TRUE;
+						break;
+					}
+				}
+			}
+			while(same_img);
+				
+			gint k;
+			for(k=0; k<5; k++)
+			{
+				if(images_not_allowed[k] == -1)
+				{
+					images_not_allowed[k] = rand_img;
+					break;
+				}
+			}
+
+			sprintf(path, "res/animals/%d.png", rand_img);
+			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
+		}
+	}
+
+}
+void
+show_result_2(GtkButton *button, gpointer data)
+{
+	g_print("\nok");
 }
