@@ -202,7 +202,7 @@ void show_result(GtkButton *button, gpointer user_data)
 		g_slice_free(Button, &arr_button[i]);
 */
 	/*An window_1*/
-	//gtk_widget_hide(GTK_WIDGET(window_default));
+	gtk_widget_hide(GTK_WIDGET(window_default));
 
 	/*Lay dap an cua user*/
 	gint *your_answer = (gint *)user_data;
@@ -252,7 +252,7 @@ void show_result(GtkButton *button, gpointer user_data)
 	//set_image_random();
 
 	/*Hien thi "cau hoi" va cho user tuong tac*/
-	gtk_widget_show_all(GTK_WIDGET(window_default));
+	//gtk_widget_show_all(GTK_WIDGET(window_default));
 
 	/**/
 //	is_waiting_for_press_button = false;
@@ -371,5 +371,7 @@ void set_image_random()
 void
 show_result_2(GtkButton *button, gpointer data)
 {
-	g_print("\nok");
+	gtk_widget_hide(GTK_WIDGET(window_result));
+	gtk_image_clear(GTK_IMAGE(image_result));
+	gtk_widget_show_all(GTK_WIDGET(window_default));
 }
