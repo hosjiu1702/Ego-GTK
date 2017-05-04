@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 	/*Get certain objects inside .glade file*/
 	window_default = GTK_WIDGET(gtk_builder_get_object(builder, "window_1"));
 	image_default = GTK_WIDGET(gtk_builder_get_object(builder, "image_default"));
-	eventBox = GTK_WIDGET(gtk_builder_get_object(builder, "event_box"))
+	eventBox = GTK_WIDGET(gtk_builder_get_object(builder, "event_box"));
 	
 	/*Vung nho duoc cap phat nay se duoc dung xuyen suot chuong trinh*/
 	gint m;
