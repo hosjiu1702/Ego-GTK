@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
 
 	/*FUNCTION FOR RANDOM IMAGE*/
-	set_image_random();
+	set_image_random(NULL);
 
 	/*Ket noi tin hieu cho cac button*/
 	gint l;
@@ -121,7 +121,6 @@ int main(int argc, char *argv[])
 
 	/*Ham cho xu ly khi thuc hien xong viec hien thi window_default*/
 	g_idle_add_full(G_PRIORITY_DEFAULT_IDLE, transfer_uart, NULL, NULL);
-	g_timeout_add(1500, set_image_random, NULL);
 
 	/* g_thread_new("uart_thread", uart_transfer, NULL); */
 
@@ -238,6 +237,7 @@ void show_result(GtkButton *button, gpointer user_data)
 
 	}
 
+	/*reset de chon "cau hoi" moi*/
 	g_timeout_add(2000, delete_func, NULL);
 
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
@@ -371,6 +371,7 @@ gboolean set_image_random(gpointer user_data)
 		}
 	}
 
+	return G_SOURCE_REMOVE;
 }
 
 gboolean
@@ -382,6 +383,7 @@ delete_func(gpointer user_data)
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
+	g_timeout_add(1, set_image_random, NULL);
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
