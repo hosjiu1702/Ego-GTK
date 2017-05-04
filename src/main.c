@@ -97,6 +97,17 @@ int main(int argc, char *argv[])
 	window_result = GTK_WIDGET(gtk_builder_get_object(builder, "window_2"));
 	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
 
+	/*The below code fix Segmentation fault error*/
+	GtkWidget *eventBox;
+	eventBox = gtk_event_box_new();
+	gtk_container_add(GTK_CONTAINER(window_default), eventBox);
+	g_signal_connect(G_OBJECT(eventBox), "button-press-event", G_CALLBACK(show_result), NULL);
+	gint u;
+	for(u=0; u<6; u++)
+	{
+		gtk_container_add(GTK_CONTAINER(eventBox), arr_button[u]->image);
+	}
+
 	/*FUNCTION FOR RANDOM IMAGE*/
 	set_image_random();
 
