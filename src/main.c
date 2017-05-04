@@ -381,10 +381,28 @@ delete_func(gpointer user_data)
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
-	//set_image_random();
-	while(1);
-	/*Hien thi "cau hoi moi"*/
-	gtk_widget_show_all(GTK_WIDGET(window_default));
+	gtk_widget_destroy(GTK_WIDGET(window_default));
+	window_default = GTK_WIDGET(gtk_builder_get_object(builder, "window_1"));
+	image_default = GTK_WIDGET(gtk_builder_get_object(builder, "image_default"));
+	
+	/*Vung nho duoc cap phat nay se duoc dung xuyen suot chuong trinh*/
+	gint m;
+	for(m=0; m<6; m++)
+	{
+		arr_button[m]->button = GTK_WIDGET(gtk_builder_get_object(builder, button_glade_id[m]));
+		arr_button[m]->image = GTK_WIDGET(gtk_builder_get_object(builder, button_image_id[m]));
+	}
 
+	set_image_random();
+
+	/*Hien thi "cau hoi moi"*/
+	gint l;
+	for(l=0; l<6; l++)
+	{
+		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
+	}
+
+	/*Thiet lap hien thi fullscreen*/
+	gtk_window_fullscreen(GTK_WINDOW(window_default));
 	return G_SOURCE_REMOVE;
 }
