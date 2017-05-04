@@ -104,7 +104,6 @@ int main(int argc, char *argv[])
 	/*----------------*/
 	/*Capture button press (using for image widget)*/
 	gtk_widget_add_events(eventBox, GDK_BUTTON_PRESS_MASK);
-	g_signal_connect(G_OBJECT(eventBox), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
 
 	/*FUNCTION FOR RANDOM IMAGE*/
 	set_image_random();
@@ -113,7 +112,8 @@ int main(int argc, char *argv[])
 	gint l;
 	for(l=0; l<6; l++)
 	{
-		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
+		//g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
+		g_signal_connect(G_OBJECT(eventBox), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
 	}
 
 	/*Thiet lap hien thi fullscreen*/
