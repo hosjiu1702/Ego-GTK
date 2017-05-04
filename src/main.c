@@ -46,6 +46,7 @@ gint init_serial(gint);
 gboolean transfer_uart(gpointer);
 void destroy_window_default(gpointer);
 void set_image_random();
+gboolean delete_func(gpointer)
 
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
 /* 			dung de hien thi window_1 		*/
@@ -75,9 +76,9 @@ int main(int argc, char *argv[])
 	gtk_init(&argc, &argv);
 
 	/*Pointer to window_1.glade file*/
-	builder = gtk_builder_new_from_file("glad/window_1.glade");
-	//gtk_builder_add_from_file(builder, "glad/window_1.glade", NULL);
-	//gtk_builder_add_from_file(builder, "glad/window_2.glade", NULL);
+	builder = gtk_builder_new();
+	gtk_builder_add_from_file(builder, "glad/window_1.glade", NULL);
+	gtk_builder_add_from_file(builder, "glad/window_2.glade", NULL);
 
 	/*-----------------LAY CAC OBJECT O WINDOW_1--------------------*/
 	/*Get certain objects inside .glade file*/
@@ -108,10 +109,10 @@ int main(int argc, char *argv[])
 
 	/*Thiet lap hien thi fullscreen*/
 	gtk_window_fullscreen(GTK_WINDOW(window_default));
-	//gtk_window_fullscreen(GTK_WINDOW(window_result));
+	gtk_window_fullscreen(GTK_WINDOW(window_result));
 
 	/*Chi hien thi window_1*/
-	gtk_widget_show(GTK_WIDGET(window_default));
+	gtk_widget_show_all(GTK_WIDGET(window_default));
 
 	/*Van con su dung cho nhung lan ke tiep => comment dong ben duoi*/
 	/* g_object_unref(builder); */
@@ -235,13 +236,16 @@ void show_result(GtkButton *button, gpointer user_data)
 		//g_usleep(3000000);
 
 	}
+
+	g_timeout_add(2000, G_CALLBACK(delete_func), NULL);
+
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
 	/*Xoa "cua so dap an"*/
 	//gtk_widget_destroy(GTK_WIDGET(window));
 
 	/*-------------------------Hien thi "cau hoi" tiep theo------------------------*/
 
-	g_usleep(1000000);
+	//g_usleep(1000000);
 	/*hide window_2*/
 	//gtk_widget_hide(GTK_WIDGET(window_result));
 
@@ -364,4 +368,12 @@ void set_image_random()
 		}
 	}
 
+}
+
+gboolean
+delete_func(gpointer user_data)
+{
+	g_print("ok");
+
+	return G_SOURCE_REMOVE;
 }
