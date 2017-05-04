@@ -41,7 +41,6 @@ gboolean is_waiting_for_press_button = false;
 
 void on_window_1_destroy();
 void show_result (GtkButton*, gpointer);
-void show_result_2 (GtkButton*, gpointer);
 void init_some_components();
 gint init_serial(gint);
 gboolean transfer_uart(gpointer);
@@ -76,9 +75,9 @@ int main(int argc, char *argv[])
 	gtk_init(&argc, &argv);
 
 	/*Pointer to window_1.glade file*/
-	builder = gtk_builder_new();
-	gtk_builder_add_from_file(builder, "glad/window_1.glade", NULL);
-	gtk_builder_add_from_file(builder, "glad/window_2.glade", NULL);
+	builder = gtk_builder_new_from_file("glad/window_1.glade");
+	//gtk_builder_add_from_file(builder, "glad/window_1.glade", NULL);
+	//gtk_builder_add_from_file(builder, "glad/window_2.glade", NULL);
 
 	/*-----------------LAY CAC OBJECT O WINDOW_1--------------------*/
 	/*Get certain objects inside .glade file*/
@@ -105,8 +104,6 @@ int main(int argc, char *argv[])
 	for(l=0; l<6; l++)
 	{
 		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result), &(arr_button[l]->id));
-		g_signal_connect(G_OBJECT(arr_button[l]->button), "clicked", G_CALLBACK(show_result_2), &(arr_button[l]->id));
-
 	}
 
 	/*Thiet lap hien thi fullscreen*/
@@ -367,11 +364,4 @@ void set_image_random()
 		}
 	}
 
-}
-void
-show_result_2(GtkButton *button, gpointer data)
-{
-	gtk_widget_hide(GTK_WIDGET(window_result));
-	gtk_image_clear(GTK_IMAGE(image_result));
-	gtk_widget_show_all(GTK_WIDGET(window_default));
 }
