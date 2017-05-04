@@ -327,8 +327,8 @@ void set_image_random()
 		if( o == result_button_id )
 		{
 			sprintf(path, "res/animals/%d.png", result_img_id);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
-			gtk_image_set_from_file(GTK_IMAGE(image_default), path);
+			//gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
+			//gtk_image_set_from_file(GTK_IMAGE(image_default), path);
 		}
 
 
@@ -364,7 +364,7 @@ void set_image_random()
 			}
 
 			sprintf(path, "res/animals/%d.png", rand_img);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
+			//gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
 		}
 	}
 
