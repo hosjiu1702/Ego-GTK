@@ -253,7 +253,7 @@ void show_result(GtkButton *button, gpointer user_data)
 	//set_image_random();
 
 	/*Hien thi "cau hoi" va cho user tuong tac*/
-	//gtk_widget_show_all(GTK_WIDGET(window_default));
+	gtk_widget_show_all(GTK_WIDGET(window_default));
 
 	/**/
 //	is_waiting_for_press_button = false;
