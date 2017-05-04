@@ -23,7 +23,7 @@ enum
 const gint IMAGE_MAX_COUNT = 83;
 gint serial_port;
 /*-------------------------------------*/
-static gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
+gint img_id_not_use[IMAGE_MAX_COUNT] = {-1};
 
 /*---------------------------------------*/
 gchar *button_glade_id[6];
