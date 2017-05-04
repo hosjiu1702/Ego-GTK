@@ -280,6 +280,7 @@ transfer_uart(gpointer user_data)
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
 
+				serialPutchar(serial_port, result_img_id);
 				/*Vong lap idle sau se khong cho an nut nua - khong doc serial*/
 				is_waiting_for_press_button = false;
 			}
