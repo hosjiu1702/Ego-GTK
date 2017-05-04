@@ -399,6 +399,11 @@ delete_func(gpointer user_data)
 		}
 	}
 	while(same_image);
+	
+	gint q = 0;
+	while(img_id_not_use[q] != -1) q++;
+	
+	img_id_not_use[q] = result_img_id;
 
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
