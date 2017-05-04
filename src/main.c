@@ -382,7 +382,24 @@ delete_func(gpointer user_data)
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
 	result_button_id = g_random_int_range(1,7);
-
+	gboolean same_image = FALSE;
+	do
+	{
+		/*Chon ngau nhien mot tam anh (it's id)*/
+		result_img_id = g_random_int_range(1, IMAGE_MAX_COUNT);
+		
+		gint i;
+		for(i=0; i<IMAGE_MAX_COUNT; i++)
+		{
+			if( (img_id_not_use[i] != -1) && (img_id_not_use[i] == result_img_id) )
+			{
+				same_image = TRUE;
+				break;
+			}
+		}
+	}
+	while(same_image);
+	
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
