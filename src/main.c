@@ -385,10 +385,10 @@ delete_func(gpointer user_data)
 	result_button_id = g_random_int_range(1,7);
 
 	/*Chon mot anh ngau nhien de hien thi*/
-	gboolean same_image = FALSE;
+/*	gboolean same_image = FALSE;
 	do
 	{
-		/*Chon ngau nhien mot tam anh (it's id)*/
+		///*Chon ngau nhien mot tam anh (it's id)
 		result_img_id = g_random_int_range(1, IMAGE_MAX_COUNT);
 		
 		gint i;
@@ -402,7 +402,7 @@ delete_func(gpointer user_data)
 		}
 	}
 	while(same_image);
-	
+*/	
 	gint q = 0;
 	while(img_id_not_use[q] != -1) q++;
 	
