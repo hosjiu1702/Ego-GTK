@@ -377,10 +377,10 @@ delete_func(gpointer user_data)
 	gtk_image_clear(GTK_IMAGE(image_result));
 
 	/*An cua so dap an*/
-	gtk_widget_hide(GTK_WIDGET(window_result))
+	gtk_widget_hide(GTK_WIDGET(window_result));
 
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
-	
+
 	return G_SOURCE_REMOVE;
 }
