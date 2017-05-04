@@ -237,7 +237,7 @@ void show_result(GtkButton *button, gpointer user_data)
 
 	}
 
-	g_timeout_add(2000, G_CALLBACK(delete_func), NULL);
+	g_timeout_add(2000, delete_func, NULL);
 
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
 	/*Xoa "cua so dap an"*/
