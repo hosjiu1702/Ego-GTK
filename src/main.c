@@ -101,6 +101,9 @@ int main(int argc, char *argv[])
 	GtkWidget *eventBox;
 	eventBox = gtk_event_box_new();
 	gtk_container_add(GTK_CONTAINER(window_default), eventBox);
+
+	/*Capture button press (using for image widget)*/
+	gtk_widget_add_events(eventBox, GDK_BUTTON_PRESS_MASK);
 	g_signal_connect(G_OBJECT(eventBox), "button-press-event", G_CALLBACK(show_result), NULL);
 	gint u;
 	for(u=0; u<6; u++)
