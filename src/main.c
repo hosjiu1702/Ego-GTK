@@ -45,7 +45,7 @@ void init_some_components();
 gint init_serial(gint);
 gboolean transfer_uart(gpointer);
 void destroy_window_default(gpointer);
-void set_image_random();
+gboolean set_image_random(gpointer)
 gboolean delete_func(gpointer);
 
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
@@ -289,7 +289,7 @@ transfer_uart(gpointer user_data)
  * Ham nay duoc thuc hien moi khi 
  *	window_1 hien thi "cau hoi" moi
  */
-void set_image_random()
+gboolean set_image_random(gpointer user_data)
 {
 	/*Chon mot trong 6 nut de dua DAP AN vao*/
 	result_button_id = g_random_int_range(1,7);
