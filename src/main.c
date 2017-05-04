@@ -273,7 +273,7 @@ transfer_uart(gpointer user_data)
 			{
 				/*Gia tri nay tu 1->6*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
-				g_print(pressed_button_value);
+				g_print("\n%d", pressed_button_value);
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
