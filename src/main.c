@@ -199,6 +199,9 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	for(gint i=0; i<6; i++)
 		g_slice_free(Button, &arr_button[i]);
 */
+	/*Khong cho phep nhan nut*/
+	is_waiting_for_press_button = false;
+
 	/*An window_1*/
 	gtk_widget_hide(GTK_WIDGET(window_default));
 
@@ -257,7 +260,6 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	//gtk_widget_show_all(GTK_WIDGET(window_default));
 
 	/**/
-//	is_waiting_for_press_button = false;
 }
 
 /*Day la idle function nen se loop lien tuc*/
@@ -271,9 +273,9 @@ transfer_uart(gpointer user_data)
 			/*Neu co du lieu den thi doc va phat tin hieu den button widget tuong ung*/
 			if(serialDataAvail(serial_port))
 			{
-				/*Gia tri nay tu 1->6*/
+				/*Gia tri nay tu 1->6 (thuc te la ma ASCII)*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
-				g_print("\n%d", pressed_button_value);
+				pressed_button_value = pressed_button_value - 48;
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
@@ -390,6 +392,8 @@ delete_func(gpointer user_data)
 	set_image_random();
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
+
+	is_waiting_for_press_button = true;
 
 	return G_SOURCE_REMOVE;
 }
