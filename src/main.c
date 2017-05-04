@@ -45,7 +45,7 @@ void init_some_components();
 gint init_serial(gint);
 gboolean transfer_uart(gpointer);
 void destroy_window_default(gpointer);
-gboolean set_image_random(gpointer);
+void set_image_random();
 gboolean delete_func(gpointer);
 
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
@@ -188,7 +188,7 @@ init_serial(gint baudrate)
 }
 
 
-void show_result(GtkButton *button, gpointer user_data)
+void show_result(GtkWidget *widget, gpointer user_data)
 {
 	/*Xoa di window_default cu*/
 	/*---------khong nen destroy vi con dung cho viec hien thi lan sau o window_1---*/
@@ -289,7 +289,7 @@ transfer_uart(gpointer user_data)
  * Ham nay duoc thuc hien moi khi 
  *	window_1 hien thi "cau hoi" moi
  */
-gboolean set_image_random(gpointer user_data)
+void set_image_random()
 {
 	/*Chon mot trong 6 nut de dua DAP AN vao*/
 	result_button_id = g_random_int_range(1,7);
@@ -383,7 +383,8 @@ delete_func(gpointer user_data)
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
-	g_timeout_add(1, set_image_random, NULL);
+	result_button_id = g_random_int_range(1,7);
+
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
