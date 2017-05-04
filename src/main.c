@@ -312,11 +312,16 @@ void set_image_random()
 		}
 	}
 	while(same_image);
-	
-	gint q = 0;
-	while(img_id_not_use[q] != -1) q++;
-	
-	img_id_not_use[q] = result_img_id;
+
+	gint j;
+	for(j=0; j<IMAGE_MAX_COUNT; j++)
+	{
+		if(img_id_not_use[j] == -1)
+		{
+			img_id_not_use[j] = result_img_id;
+			break;
+		}
+	}	
 
 	/*load anh vao cac button va image_default*/
 	gint images_not_allowed[5] = {-1};
@@ -400,10 +405,15 @@ delete_func(gpointer user_data)
 	}
 	while(same_image);
 	
-	gint q = 0;
-	while(img_id_not_use[q] != -1) q++;
-	
-	img_id_not_use[q] = result_img_id;
+	gint j;
+	for(j=0; j<IMAGE_MAX_COUNT; j++)
+	{
+		if(img_id_not_use[j] == -1)
+		{
+			img_id_not_use[j] = result_img_id;
+			break;
+		}
+	}	
 
 	/*Hien thi "cau hoi moi"*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
