@@ -69,9 +69,9 @@ void loop() {
       bool is_received = false;
       char data[3];
       /*Neu nhan duoc du lieu*/
-      while(Serial.available() > 0)
+      while(Serial5.available() > 0)
       {
-        data[i++] = (char)Serial.read();
+        data[i++] = (char)Serial5.read();
         is_received = true;
       }
 
@@ -152,7 +152,7 @@ byte read_button(byte analog_pin)
 
 int send_button_value(byte button_value)
 {
-  Serial.print(button_value); // DU LIEU duoc gui la ASCII
+  Serial5.print(button_value); // DU LIEU duoc gui la ASCII
   return 1;
 }
 
