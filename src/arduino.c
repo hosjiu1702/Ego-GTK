@@ -71,7 +71,7 @@ void loop() {
       if(Serial5.available())
       {
         /*Luu DU LIEU nhan duoc vao day*/
-        data[i] == Serial5.available();
+        data[i] = Serial5.read();
         i++;
 
         /*Neu da nhan du DU LIEU*/
@@ -86,12 +86,12 @@ void loop() {
     else
     {
       char result = data[0] - 48;
-      Serial.write(result);
       unsigned char index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
       /*Neu ket qua la dung*/
-      if (result == 1)
+      if (result)
       {
         Serial.println(" Playing music \"DUNG\" ");
+        Serial.println(index_music);
         delay(1000);
 
         /*Thuc hien cong viec phat nhac VUI*/
@@ -102,9 +102,10 @@ void loop() {
 
       }
       /*Neu ket qua la sai*/
-      else if(result == 0)
+      else
       {
         Serial.println(" Playing music \"SAI\" ");
+        Serial.println(index_music);
         delay(1000);
         /*Thuc hien cong viec phat nhac BUON*/
        // tmrpcm.play("sai-4.wav");

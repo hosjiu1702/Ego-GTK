@@ -291,14 +291,6 @@ transfer_uart(gpointer user_data)
 				is_waiting_for_press_button = false;
 			}
 		}
-		/*XOA DU LIEU THUA - CHONG NHIEU*/
-		else
-		{
-			if(serialDataAvail(serial_port))
-			{
-				serialGetchar(serial_port);
-			}
-		}
 
 	return G_SOURCE_CONTINUE;
 }
