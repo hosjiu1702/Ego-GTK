@@ -5,6 +5,10 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 int serial_port;
+byte len;
+int sound_id = 1;
+char* index_music;
+
 int main(int argc, char **argv)
 {
 
@@ -26,11 +30,12 @@ int main(int argc, char **argv)
 		//unsigned char c[1] = {"1"};
 
 		//serialPutchar(serial_port, c);
+  index_music = (char *)malloc(2*sizeof(char));
+  sprintf(index_music, "%d", sound_id);
+  len = strlen(index_music);
 
-	write(serial_port, "0", 1);
-	write(serial_port, "12", 2);
-
-
+  write(serial_port, "1", 1);
+  write(serial_port, index_music, len);
 
 	return 0;
 }
