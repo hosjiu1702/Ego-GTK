@@ -231,7 +231,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
 		/*Gui tin hieu SAI den arduino de phat nhac */
-		serialPutchar(serial_port, 0);
+		//serialPutchar(serial_port, 0);
 		
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
