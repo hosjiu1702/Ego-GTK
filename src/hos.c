@@ -4,10 +4,11 @@
 
 #include <wiringPi.h>
 #include <wiringSerial.h>
-int main()
+int serial_port;
+int main(int argc, char **argv)
 {
 
-	int serial_port;
+	
 
   if (wiringPiSetup () == -1)
   {
@@ -26,9 +27,10 @@ int main()
 		int i;
 		unsigned char c = 1;
 
-		serialPutchar(serial_port, c);
+		//serialPutchar(serial_port, c);
 
-		delay(500);
+	write(serial_port, &c, 1);
+		//delay(500);
 
 	}
 
