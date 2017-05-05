@@ -29,8 +29,8 @@ int main(int argc, char **argv)
 
 		//serialPutchar(serial_port, c);
 
-	write(serial_port, "h", 1);
-	write(serial_port, "h", 1);
+	write(serial_port, "1", 1);
+	//write(serial_port, "h", 1);
 		//delay(500);
 
 	}
