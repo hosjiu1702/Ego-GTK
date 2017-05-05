@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	while(1)
 	{
 		int i;
-		unsigned char c[1] = {1};
+		unsigned char c[1] = {"1"};
 
 		//serialPutchar(serial_port, c);
 
