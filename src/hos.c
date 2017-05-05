@@ -13,5 +13,6 @@ int main()
 	
 	serialPutchar(serial_port, 1);
 
+	while(1){}
 	return 0;
 }
