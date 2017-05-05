@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     return 1 ;
 }
 
-	if((serial_port = serialOpen("/dev/ttyAMA0", 115200)) < 0)
+	if((serial_port = serialOpen("/dev/ttyAMA0", 9600)) < 0)
 	{
 		//printf("\nerror during init serial");
 		return 0;
@@ -25,11 +25,11 @@ int main(int argc, char **argv)
 	while(1)
 	{
 		int i;
-		unsigned char c = 1;
+		unsigned char c = "1";
 
 		//serialPutchar(serial_port, c);
 
-	write(serial_port, &c, 1);
+	write(serial_port, "hosjiu", 10);
 		//delay(500);
 
 	}
