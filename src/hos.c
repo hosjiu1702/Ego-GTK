@@ -1,4 +1,4 @@
-#include <stdio.h>
+
 #include <string.h>
 #include <errno.h>
 
@@ -7,8 +7,6 @@
 int main()
 {
 
-	while(1)
-	{
 	int serial_port;
 
   if (wiringPiSetup () == -1)
@@ -23,13 +21,14 @@ int main()
 		return 0;
 	}
 
-	int i;
-	unsigned int c = 1;
-		
-	for(i=0; i<10; i++)
+	while(1)
 	{
+		int i;
+		unsigned int c = 1;
+
 		serialPutchar(serial_port, c);
-	}
+
+		delay(500);
 
 	}
 
