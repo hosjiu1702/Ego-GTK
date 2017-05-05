@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
 		//serialPutchar(serial_port, c);
 
-	write(serial_port, "3", 10);
+	write(serial_port, "12", 2);
 
 
 
