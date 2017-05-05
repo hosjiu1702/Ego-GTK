@@ -21,19 +21,13 @@ int main(int argc, char **argv)
 		//printf("\nerror during init serial");
 		return 0;
 	}
-
-	while(1)
-	{
+	
 		//int i;
 		//unsigned char c[1] = {"1"};
 
 		//serialPutchar(serial_port, c);
 
 	write(serial_port, "12", 2);
-	//write(serial_port, "h", 1);
-		//delay(500);
-
-	}
 
 	return 0;
 }
