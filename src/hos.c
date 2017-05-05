@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <stdlib.h>
 
 #include <wiringPi.h>
 #include <wiringSerial.h>
 int serial_port;
-byte len;
+char len;
 int sound_id = 1;
 char* index_music;
 
