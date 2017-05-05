@@ -292,6 +292,8 @@ transfer_uart(gpointer user_data)
 			}
 		}
 
+	serialFlush(serial_port);
+
 	return G_SOURCE_CONTINUE;
 }
 
