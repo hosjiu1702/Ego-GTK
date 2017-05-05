@@ -24,10 +24,11 @@ int main()
 	}
 
 	int i;
+	unsigned int c = 1;
 		
 	for(i=0; i<10; i++)
 	{
-		serialPutchar(serial_port, 1);
+		serialPutchar(serial_port, c);
 	}
 
 	}
