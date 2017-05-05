@@ -22,8 +22,10 @@ int main()
 		printf("\nerror during init serial");
 		return 0;
 	}
-	
-	for(int i=0; i<10; i++)
+
+	int i;
+		
+	for(i=0; i<10; i++)
 	{
 		serialPutchar(serial_port, 1);
 	}
