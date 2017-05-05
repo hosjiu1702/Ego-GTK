@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 
 		//serialPutchar(serial_port, c);
 
-	write(serial_port, "hosjiu", 10);
+	write(serial_port, "hosjiu", 8);
 		//delay(500);
 
 	}
