@@ -15,7 +15,7 @@ int main()
     return 1 ;
 }
 
-	if((serial_port = serialOpen("/dev/ttyAMA0", 9600)) < 0)
+	if((serial_port = serialOpen("/dev/ttyAMA0", 115200)) < 0)
 	{
 		//printf("\nerror during init serial");
 		return 0;
