@@ -199,8 +199,6 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	for(gint i=0; i<6; i++)
 		g_slice_free(Button, &arr_button[i]);
 */
-	/*Khong cho phep nhan nut*/
-	is_waiting_for_press_button = false;
 
 	/*An window_1*/
 	gtk_widget_hide(GTK_WIDGET(window_default));
