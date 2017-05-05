@@ -7,7 +7,7 @@
 #include <wiringSerial.h>
 int serial_port;
 char len;
-int sound_id = 2;
+int sound_id = 12;
 char* index_music;
 
 int main(int argc, char **argv)
