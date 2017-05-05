@@ -25,11 +25,11 @@ int main(int argc, char **argv)
 	while(1)
 	{
 		int i;
-		unsigned char c = "1";
+		unsigned char c[1] = 1;
 
 		//serialPutchar(serial_port, c);
 
-	write(serial_port, "1", 1);
+	write(serial_port, c, 1);
 		//delay(500);
 
 	}
