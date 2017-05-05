@@ -206,6 +206,8 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	/*Lay dap an cua user*/
 	gint *your_answer = (gint *)user_data;
 
+	gint sound_id = result_img_id;
+
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
@@ -235,7 +237,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "0", 1);
-		
+
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
 
