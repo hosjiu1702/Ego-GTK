@@ -296,7 +296,7 @@ transfer_uart(gpointer user_data)
 		{
 			if(serialDataAvail(serial_port))
 			{
-				serialFlush(serial_port);
+				serialGetchar(serial_port);
 			}
 		}
 
