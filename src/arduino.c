@@ -32,6 +32,7 @@ byte value;   // gia tri global cua nut nhan
 bool result;
 byte index_music;
 
+char data[3];
 /*-----------------------------------------*/
 void setup() {
   Serial.begin(9600);
@@ -65,39 +66,30 @@ void loop() {
     /*Cho ket qua tra ve tu raspberry pi*/
     if (is_waiting_result)
     {
-      byte i=0;
-      bool is_received = false;
-      char data[3];
-      /*Neu nhan duoc du lieu*/
-      while(Serial5.available() > 0)
+      static char i = 0;
+      /*Neu co du lieu trong bo dem dang cho*/
+      if(Serial5.available())
       {
-        data[i++] = (char)Serial5.read();
-        is_received = true;
-      }
+        /*Luu DU LIEU nhan duoc vao day*/
+        data[i] == Serial5.available();
+        i++;
 
-      if(is_received)
-      {
-        /*--ket qua la sai--*/
-        if(data[0] == 48)
+        /*Neu da nhan du DU LIEU*/
+        if( i==3 )
         {
-          result = false;
-          index_music = 0;
-        }
-        /*--ket qua la dung--*/
-        else if(data[0] == 49)
-        {
-          result = true;
-          index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
+          i = 0;
+          is_waiting_result = false;
         }
       }
-
-      is_waiting_result = false;
     }
     /*Khi da co du lieu roi tien hanh kiem tra*/
     else
     {
+      char result = data[0] - 48;
+      Serial.write(result);
+      unsigned char index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
       /*Neu ket qua la dung*/
-      if (result == true)
+      if (result == 1)
       {
         Serial.println(" Playing music \"DUNG\" ");
         delay(1000);
@@ -110,9 +102,10 @@ void loop() {
 
       }
       /*Neu ket qua la sai*/
-      else
+      else if(result == 0)
       {
         Serial.println(" Playing music \"SAI\" ");
+        delay(1000);
         /*Thuc hien cong viec phat nhac BUON*/
        // tmrpcm.play("sai-4.wav");
         //Serial.println("PHAT SAI-4");
@@ -120,6 +113,7 @@ void loop() {
         //digitalWrite(SPEAKER_PIN, LOW);
 
       }
+
       is_waiting_press_button = true;
       is_waiting_result = true;
     }
@@ -168,4 +162,9 @@ bool isPress()
 
   /*con neu khong thi tra false*/
   return false;
+}
+
+bool isGetResult()
+{
+
 }

@@ -239,6 +239,8 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "0", 1);
 
+		write(serial_port, "00", 2);
+
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
 
@@ -280,7 +282,7 @@ transfer_uart(gpointer user_data)
 				/*Gia tri nay tu 1->6 (thuc te la ma ASCII)*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
 				pressed_button_value = pressed_button_value - 48;
-				g_print("\n%d", pressed_button_value);
+				//g_print("\n%d", pressed_button_value);
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
