@@ -1,36 +1,46 @@
-#include <SD.h>
+//#include <SD.h>
 #define SD_ChipSelectPin 4
-#include <TMRpcm.h>
-#include <SPI.h>
+//#include <TMRpcm.h>
+//#include <SPI.h>
 
 #define SPEAKER_PIN 9
-#define ANALOG_PIN A0
-#define DUNG true
-#define BUTTON_1_ANALOG_MIN_VALUE -3
-#define BUTTON_1_ANALOG_MAX_VALUE 3
-#define BUTTON_2_ANALOG_MIN_VALUE 100
-#define BUTTON_2_ANALOG_MAX_VALUE 630
-#define BUTTON_3_ANALOG_MIN_VALUE 660
-#define BUTTON_3_ANALOG_MAX_VALUE 700
-#define BUTTON_4_ANALOG_MIN_VALUE 765
-#define BUTTON_4_ANALOG_MAX_VALUE 785
-#define BUTTON_5_ANALOG_MIN_VALUE 815
-#define BUTTON_5_ANALOG_MAX_VALUE 835
-#define BUTTON_6_ANALOG_MIN_VALUE 870
-#define BUTTON_6_ANALOG_MAX_VALUE 890
 
-TMRpcm tmrpcm;
+#define ANALOG_PIN A0
+
+#define DUNG true
+
+#define BUTTON_1_ANALOG_MIN_VALUE -1
+#define BUTTON_1_ANALOG_MAX_VALUE 1000
+#define BUTTON_2_ANALOG_MIN_VALUE 1900
+#define BUTTON_2_ANALOG_MAX_VALUE 2200
+#define BUTTON_3_ANALOG_MIN_VALUE 2600
+#define BUTTON_3_ANALOG_MAX_VALUE 2900
+#define BUTTON_4_ANALOG_MIN_VALUE 3000
+#define BUTTON_4_ANALOG_MAX_VALUE 3100
+#define BUTTON_5_ANALOG_MIN_VALUE 3200
+#define BUTTON_5_ANALOG_MAX_VALUE 3400
+#define BUTTON_6_ANALOG_MIN_VALUE 3500
+#define BUTTON_6_ANALOG_MAX_VALUE 3600
+
+
+//TMRpcm tmrpcm;
+
 bool is_waiting_press_button = true;
 bool is_waiting_result = true;
-byte answer;
-byte DATA[2];
-byte value;
+
+byte value;   // gia tri global cua nut nhan
+bool result;
+byte index_music;
+
 /*-----------------------------------------*/
 void setup() {
   Serial.begin(9600);
+  Serial5.begin(9600);
   pinMode(ANALOG_PIN, INPUT);
-  pinMode(13, OUTPUT);
-  digitalWrite(13, LOW);
+  //pinMode(13, OUTPUT);
+  //digitalWrite(13, LOW);
+
+  /*Ham nay tam thoi bi xoa trong qua trinh phat trien - THEM VAO SAU*/
   //init_module_SD_Card();
 }
 
@@ -56,35 +66,58 @@ void loop() {
     if (is_waiting_result)
     {
       byte i=0;
-      /*Neu da nhan duoc du lieu*/
-      if(Serial.available() > 0)
+      bool is_received = false;
+      char data[3];
+      /*Neu nhan duoc du lieu*/
+      while(Serial.available() > 0)
       {
-        data[i] = Serial.read();
+        data[i++] = (char)Serial.read();
+        is_received = true;
       }
-      //waitAnswer();
 
+      if(is_received)
+      {
+        /*--ket qua la sai--*/
+        if(data[0] == 48)
+        {
+          result = false;
+          index_music = 0;
+        }
+        /*--ket qua la dung--*/
+        else if(data[0] == 49)
+        {
+          result = true;
+          index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
+        }
+      }
+
+      is_waiting_result = false;
     }
-    /*Neu da nhan duoc ket qua thi kiem tra ket qua dung hay sai*/
+    /*Khi da co du lieu roi tien hanh kiem tra*/
     else
     {
       /*Neu ket qua la dung*/
-      if (answer == 49)
+      if (result == true)
       {
+        Serial.println(" Playing music \"DUNG\" ");
+        delay(1000);
+
         /*Thuc hien cong viec phat nhac VUI*/
-        tmrpcm.play(".wav");
+        //tmrpcm.play(".wav");
         //Serial.println("PHAT DUNG-4");
         //delay(5500);
-        digitalWrite(SPEAKER_PIN, LOW);
+        //digitalWrite(SPEAKER_PIN, LOW);
 
       }
       /*Neu ket qua la sai*/
       else
       {
+        Serial.println(" Playing music \"SAI\" ");
         /*Thuc hien cong viec phat nhac BUON*/
-        tmrpcm.play("sai-4.wav");
+       // tmrpcm.play("sai-4.wav");
         //Serial.println("PHAT SAI-4");
         //delay(5500);
-        digitalWrite(SPEAKER_PIN, LOW);
+        //digitalWrite(SPEAKER_PIN, LOW);
 
       }
       is_waiting_press_button = true;
@@ -121,38 +154,6 @@ int send_button_value(byte button_value)
 {
   Serial.print(button_value); // DU LIEU duoc gui la ASCII
   return 1;
-}
-
-void init_module_SD_Card()
-{
-  /*DUNG DE KHOI TAO CHO VIEC PHAT AM THANH*/
-  tmrpcm.speakerPin = 9;
-  if (!SD.begin(SD_ChipSelectPin))
-  {
-    //Serial.println("SD fail");
-    return;
-  }
-  else
-  {
-    //Serial.println("OK");
-  }
-
-  tmrpcm.play("xinchao.wav");
-  //delay(3000);
-}
-
-void waitAnswer()
-{
-  if (Serial.available() > 0)
-  {
-    digitalWrite(13, HIGH);
-    /*
-    answer = Serial.read();
-    Serial.write(answer);
-    //Serial.println(answer);
-    */
-    is_waiting_result = false;
-  }
 }
 
 bool isPress()
