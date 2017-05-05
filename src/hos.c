@@ -24,7 +24,7 @@ int main()
 	while(1)
 	{
 		int i;
-		unsigned int c = 1;
+		unsigned char c = 1;
 
 		serialPutchar(serial_port, c);
 
