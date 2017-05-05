@@ -215,10 +215,10 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
 		/*Gui tin hieu DUNG den arduino de phat nhac */
-		serialPutchar(serial_port, 1);
+		//serialPutchar(serial_port, 1);
 		
 		/*gui sound-id dung cho viec am thanh tuong ung voi image*/
-		serialPutchar(serial_port, sound_id);
+		//serialPutchar(serial_port, sound_id);
 
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
