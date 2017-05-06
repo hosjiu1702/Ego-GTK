@@ -21,6 +21,7 @@ enum
 };
 
 const gint IMAGE_MAX_COUNT = 83;
+static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
 gint img_id_not_use[83] = {-1};
@@ -206,9 +207,6 @@ void show_result(GtkWidget *widget, gpointer user_data)
   		char *index_music = (char *)malloc(2*sizeof(char));
   		sprintf(index_music, "%d", sound_id);
 
-  		/*notification for arduino*/
-  		write(serial_port, "o", 1);
-
 		/*Gui tin hieu DUNG den arduino*/
 		write(serial_port, "1", 1);
 		
@@ -252,6 +250,14 @@ transfer_uart(gpointer user_data)
 		/*Neu dang cho nhan cho viec nhan nut*/
 		if(is_waiting_for_press_button)
 		{
+			/*Gui tin hieu thong bao cho arduino */
+			if(i == 0)
+			{
+				write(serial_port, "o", 1);
+				i++;
+			}
+  			
+
 			/*Neu co du lieu den thi doc va phat tin hieu den button widget tuong ung*/
 			if(serialDataAvail(serial_port))
 			{

@@ -3,11 +3,11 @@
   //#include <TMRpcm.h>
   //#include <SPI.h>
 
+  #define __DEBUG__ __DEBUG__
+
   #define SPEAKER_PIN 9
 
   #define ANALOG_PIN A0
-
-  #define DUNG true
 
   #define BUTTON_1_ANALOG_MIN_VALUE -1
   #define BUTTON_1_ANALOG_MAX_VALUE 1000
@@ -24,7 +24,6 @@
 
 
   //TMRpcm tmrpcm;
-bool is_wait = true;
   byte value;   // gia tri global cua nut nhan
   unsigned char result;
   unsigned char index_music;
@@ -46,7 +45,10 @@ bool is_wait = true;
   /*---------------------------------*/
   void loop() {
 
-    /*Chua nhan nut thi ko lam gi ca*/
+    /*Khi chua nhan duoc tin hieu thi pause*/
+    while(Serial5.read() != 'o'){}
+
+    /*Cho user nhan nut*/
     while(!isPress()) 
     {
     }
@@ -54,23 +56,28 @@ bool is_wait = true;
     /*Neu nut duoc nhan roi thi gui gia tri di*/
     send_button_value(value);
 
-    byte i = 0;
-    while(is_wait)
+    /*Khi chua nhan duoc du lieu thi pause*/
+    while(!Serial5.available()){}
+
+    /*Neu cp du lieu den thi "get" */
+    while(Serial5.available())
     {
-      while(Serial5.available() > 0)
-      {
-        Serial.println(Serial5.read());
-        i++;
-        if(i == 3)
-        {
-          is_wait = false;
-          break;
-        }
-      }
+      /*Du lieu mac dinh la 3*/
+      data[0] = Serial5.read();
+      data[1] = Serial5.read();
+      data[2] = Serial5.read();
+      break;
     }
 
-    Serial.println(".");
+    result = data[0] - 48;
+    index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
 
+    #ifdef __DEBUG__
+      Serial.println(data[1]);
+    #endif
+
+    /*Gia dinh la se choi nhac o day*/
+    delay(3000);
 }
 
   byte read_button(byte analog_pin)
@@ -99,6 +106,7 @@ bool is_wait = true;
 
   int send_button_value(byte button_value)
   {
+    
     Serial5.print(button_value); // DU LIEU duoc gui la ASCII
     return 1;
   }
