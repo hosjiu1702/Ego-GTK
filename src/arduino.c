@@ -29,7 +29,7 @@
   unsigned char result;
   unsigned char index_music;
 
-  char data[3];
+  unsigned char data[3];
   /*-----------------------------------------*/
   void setup() {
     Serial.begin(9600);
@@ -53,6 +53,7 @@
 
     /*Neu nut duoc nhan roi thi gui gia tri di*/
     send_button_value(value);
+
     Serial.println(value);
 
     while(1)

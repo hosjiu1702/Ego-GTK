@@ -114,15 +114,10 @@ int main(int argc, char *argv[])
 	/*Chi hien thi window_1*/
 	gtk_widget_show_all(GTK_WIDGET(window_default));
 
-	/*Van con su dung cho nhung lan ke tiep => comment dong ben duoi*/
-	/* g_object_unref(builder); */
-
 	is_waiting_for_press_button = true;
 
 	/*Ham cho xu ly khi thuc hien xong viec hien thi window_default*/
 	g_idle_add_full(G_PRIORITY_DEFAULT_IDLE, transfer_uart, NULL, NULL);
-
-	/* g_thread_new("uart_thread", uart_transfer, NULL); */
 
 	gtk_main();
 
@@ -190,15 +185,6 @@ init_serial(gint baudrate)
 
 void show_result(GtkWidget *widget, gpointer user_data)
 {
-	/*Xoa di window_default cu*/
-	/*---------khong nen destroy vi con dung cho viec hien thi lan sau o window_1---*/
-	//gtk_widget_destroy(GTK_WIDGET(window_default));
-
-	/*Giai phong bo nho da cap truoc do*/
-/*
-	for(gint i=0; i<6; i++)
-		g_slice_free(Button, &arr_button[i]);
-*/
 
 	/*Lay dap an cua user*/
 	gint *your_answer = (gint *)user_data;
@@ -206,6 +192,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	/*index of music sound fie (.wav)*/
 	gint sound_id = result_img_id;
 
+	g_print("gia tri nut nhan cua user: %d\n", *your_answer);
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
@@ -213,12 +200,10 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
-		g_print("1");
 		/*xu ly de gui index music*/
   		char *index_music = (char *)malloc(2*sizeof(char));
   		sprintf(index_music, "%d", sound_id);
 
-  		g_print("2");
 		/*Gui tin hieu DUNG den arduino*/
 		write(serial_port, "1", 1);
 		
@@ -235,10 +220,6 @@ void show_result(GtkWidget *widget, gpointer user_data)
 			write(serial_port, temp, 2);
 			free(temp);
 		}
-
-		g_print("3");
-		/*Tam dung 3s*/
-		//g_usleep(3000000);
 	}
 	/*Neu dap an nhan duoc o day la sai*/
 	else
@@ -247,40 +228,15 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png"); //o day moi chi hien thi duoc wrong icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
-		g_print("4");
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "000", 3);
-
-		/*Tam dung 3s*/
-		//g_usleep(3000000);
-
 	}
 
-	g_print("help_me");
 	/*reset de chon "cau hoi" moi*/
 	g_timeout_add(2000, delete_func, NULL);
 
-	g_print("yes !");
 	/*An window_1*/
 	gtk_widget_hide(GTK_WIDGET(window_default));
-
-	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
-	/*Xoa "cua so dap an"*/
-	//gtk_widget_destroy(GTK_WIDGET(window));
-
-	/*-------------------------Hien thi "cau hoi" tiep theo------------------------*/
-
-	//g_usleep(1000000);
-	/*hide window_2*/
-	//gtk_widget_hide(GTK_WIDGET(window_result));
-
-	/*Chon ngau nhien anh cho "cau hoi" ke tiep nay */
-	//set_image_random();
-
-	/*Hien thi "cau hoi" va cho user tuong tac*/
-	//gtk_widget_show_all(GTK_WIDGET(window_default));
-
-	/**/
 }
 
 /*Day la idle function nen se loop lien tuc*/
@@ -297,7 +253,6 @@ transfer_uart(gpointer user_data)
 				/*Gia tri nay tu 1->6 (thuc te la ma ASCII)*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
 				pressed_button_value = pressed_button_value - 48;
-				//g_print("\n%d", pressed_button_value);
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
@@ -426,6 +381,5 @@ delete_func(gpointer user_data)
 
 	is_waiting_for_press_button = true;
 
-	g_print(":))");
 	return G_SOURCE_REMOVE;
 }
