@@ -218,16 +218,16 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		g_print("1");
 		/*xu ly de gui index music*/
-  		char *index_music = (char *)malloc(2*sizeof(char));
-  		sprintf(index_music, "%d", sound_id);
+  		char *sendingData = (char *)malloc(3*sizeof(char));
+  		sprintf(sendingData, "1%d", sound_id);
 
   		g_print("2");
 		/*Gui tin hieu DUNG den arduino*/
-		write(serial_port, "1", 1);
+		write(serial_port, sendingData, 3);
 		
 		g_print("3");
 		/*gui sound-id tuong ung voi image*/
-		write(serial_port, index_music, strlen(index_music));
+		//write(serial_port, index_music, strlen(index_music));
 
 			free(index_music);
 		/*Tam dung 3s*/
@@ -242,10 +242,10 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		g_print("4");
 		/*Gui tin hieu SAI den arduino*/
-		write(serial_port, "0", 1);
+		write(serial_port, "000", 1);
 
 		g_print("5");
-		write(serial_port, "00", 2);
+		//write(serial_port, "00", 2);
 
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
