@@ -411,19 +411,17 @@ void set_image_random()
 gboolean
 delete_func(gpointer user_data)
 {
-	set_image_random();
-
-	/*Hien thi "cau hoi moi"*/
-	gtk_widget_show_all(GTK_WIDGET(window_default));
-
 	/*Xoa anh cu - refresh for next image_result*/
 	gtk_image_clear(GTK_IMAGE(image_result));
 
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
+	set_image_random();
+	/*Hien thi "cau hoi moi"*/
+	gtk_widget_show_all(GTK_WIDGET(window_default));
+
 	is_waiting_for_press_button = true;
 
-	g_print(":))");
 	return G_SOURCE_REMOVE;
 }
