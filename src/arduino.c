@@ -25,12 +25,9 @@
 
   //TMRpcm tmrpcm;
 
-  bool is_waiting_press_button = true;
-  bool is_waiting_result = true;
-
   byte value;   // gia tri global cua nut nhan
-  bool result;
-  byte index_music;
+  unsigned char result;
+  unsigned char index_music;
 
   char data[3];
   /*-----------------------------------------*/
@@ -48,8 +45,6 @@
 
   /*---------------------------------*/
   void loop() {
-    
-    is_waiting_result = true;
 
     /*Chua nhan nut thi ko lam gi ca*/
     while(!isPress())
@@ -60,12 +55,11 @@
     send_button_value(value);
     Serial.println(value);
 
-    while(is_waiting_result)
+    while(1)
     {
       Serial.println("dang cho ket qua");
       if(Serial5.available())
       {
-        is_waiting_result = false;
         break;
       }
     }
@@ -76,18 +70,18 @@
     }
 
     /*Neu co du lieu tra ve thi phan tich chung*/
-    char result = data[0] - 48;
+    result = data[0] - 48;
     index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
 
     if(result)
     {
       Serial.println("TICK");
-      Serial.println(index_music);
+      //Serial.println(index_music);
     }
     else
     {
       Serial.println("WRONG");
-      Serial.println(index_music);
+      //Serial.println(index_music);
     }
 
     delay(2500);

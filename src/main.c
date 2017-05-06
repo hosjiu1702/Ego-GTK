@@ -200,9 +200,6 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		g_slice_free(Button, &arr_button[i]);
 */
 
-	/*An window_1*/
-	gtk_widget_hide(GTK_WIDGET(window_default));
-
 	/*Lay dap an cua user*/
 	gint *your_answer = (gint *)user_data;
 
@@ -259,8 +256,13 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 	}
 
+	g_print("help_me");
 	/*reset de chon "cau hoi" moi*/
 	g_timeout_add(2000, delete_func, NULL);
+
+	g_print("yes !");
+	/*An window_1*/
+	gtk_widget_hide(GTK_WIDGET(window_default));
 
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
 	/*Xoa "cua so dap an"*/
@@ -411,17 +413,19 @@ void set_image_random()
 gboolean
 delete_func(gpointer user_data)
 {
+	set_image_random();
+
+	/*Hien thi "cau hoi moi"*/
+	gtk_widget_show_all(GTK_WIDGET(window_default));
+
 	/*Xoa anh cu - refresh for next image_result*/
 	gtk_image_clear(GTK_IMAGE(image_result));
 
 	/*An cua so dap an*/
 	gtk_widget_hide(GTK_WIDGET(window_result));
 
-	set_image_random();
-	/*Hien thi "cau hoi moi"*/
-	gtk_widget_show_all(GTK_WIDGET(window_default));
-
 	is_waiting_for_press_button = true;
 
+	g_print(":))");
 	return G_SOURCE_REMOVE;
 }
