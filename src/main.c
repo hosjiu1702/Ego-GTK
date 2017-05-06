@@ -234,7 +234,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		else
 		{
 			char *temp = (char *)malloc(2*sizeof(char));
-			sprintf(temp, "%d0", sound_id)
+			sprintf(temp, "%d0", sound_id);
 			write(serial_port, temp, 2);
 			free(temp);
 		}
