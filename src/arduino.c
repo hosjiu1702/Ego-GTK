@@ -106,7 +106,7 @@
 
   int send_button_value(byte button_value)
   {
-    
+
     Serial5.print(button_value); // DU LIEU duoc gui la ASCII
     return 1;
   }
