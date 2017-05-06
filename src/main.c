@@ -209,7 +209,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	/*index of music sound fie (.wav)*/
 	gint sound_id = result_img_id;
 
-	g_print(result_button_id);
+	g_print("%d", result_button_id);
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
