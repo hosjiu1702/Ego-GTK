@@ -242,7 +242,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		g_print("4");
 		/*Gui tin hieu SAI den arduino*/
-		write(serial_port, "000", 1);
+		write(serial_port, "000", 3);
 
 		g_print("5");
 		//write(serial_port, "00", 2);
