@@ -54,39 +54,24 @@
     /*Neu nut duoc nhan roi thi gui gia tri di*/
     send_button_value(value);
 
-    Serial.println(value);
-
+    byte i = 0;
+    bool out = false;
     while(1)
     {
-      Serial.println("dang cho ket qua");
       if(Serial5.available())
       {
-        break;
+        Serial.println(Serial5.read());
+        i++;
+        if(i == 3)
+        {
+          out = true;
+        }
       }
+      if(out == true)
+        break;
     }
-
-    for(int i=0; i<3; i++)
-    {
-      data[i] = Serial5.read();
-    }
-
-    /*Neu co du lieu tra ve thi phan tich chung*/
-    result = data[0] - 48;
-    index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
-
-    if(result)
-    {
-      Serial.println("TICK");
-      //Serial.println(index_music);
-    }
-    else
-    {
-      Serial.println("WRONG");
-      //Serial.println(index_music);
-    }
-
-    delay(2500);
-  }
+    Serial.println(".");
+}
 
   byte read_button(byte analog_pin)
   {
