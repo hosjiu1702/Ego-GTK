@@ -200,6 +200,9 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		g_slice_free(Button, &arr_button[i]);
 */
 
+	/*An window_1*/
+	gtk_widget_hide(GTK_WIDGET(window_default));
+
 	/*Lay dap an cua user*/
 	gint *your_answer = (gint *)user_data;
 
@@ -256,13 +259,8 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 	}
 
-	g_print("help_me");
 	/*reset de chon "cau hoi" moi*/
 	g_timeout_add(2000, delete_func, NULL);
-
-	g_print("yes !");
-	/*An window_1*/
-	gtk_widget_hide(GTK_WIDGET(window_default));
 
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
 	/*Xoa "cua so dap an"*/
