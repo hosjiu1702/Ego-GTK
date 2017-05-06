@@ -229,7 +229,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*gui sound-id tuong ung voi image*/
 		write(serial_port, index_music, strlen(index_music));
 
-		free(index_music);
+			free(index_music);
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
 	}
@@ -240,9 +240,11 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png"); //o day moi chi hien thi duoc wrong icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
+		g_print("4");
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "0", 1);
 
+		g_print("5");
 		write(serial_port, "00", 2);
 
 		/*Tam dung 3s*/
