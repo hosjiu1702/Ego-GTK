@@ -194,6 +194,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 	g_print("gia tri nut nhan cua user: %d\n", *your_answer);
 	g_print("gia tri nut nhan cua result: %d\n", result_button_id);
+	g_print("DAP AN: %d\n", result_img_id);
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
