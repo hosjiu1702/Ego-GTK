@@ -209,7 +209,6 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	/*index of music sound fie (.wav)*/
 	gint sound_id = result_img_id;
 
-	g_print("%d", result_button_id);
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
@@ -220,6 +219,8 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*xu ly de gui index music*/
   		char *index_music = (char *)malloc(2*sizeof(char));
   		sprintf(index_music, "%d", sound_id);
+
+  		g_usleep(30000);
 
 		/*Gui tin hieu DUNG den arduino*/
 		write(serial_port, "1", 1);
@@ -237,6 +238,8 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*Hien thi hinh anh sai - Fullscreen*/
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png"); //o day moi chi hien thi duoc wrong icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
+
+		g_usleep(30000);
 
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "0", 1);
