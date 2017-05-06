@@ -204,24 +204,19 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
-		write(serial_port, "1", 1);
-
 		if(sound_id > 9)
-		{
-			char *index_music = (char *)malloc(3*sizeof(char));
-			sprintf(index_music, "%d", sound_id);
-			write(serial_port, index_music, 3);
-			free(index_music);
-		}
-		
-		else
 		{
 			char *index_music = (char *)malloc(2*sizeof(char));
 			sprintf(index_music, "%d", sound_id);
-			write(serial_port, index_music, 2);
-			free(index_music);
 		}
-
+		else
+		{
+			char *index_music = (char *)malloc(2*sizeof(char));
+			sprintf(index_music, "%d0", sound_id);
+		}
+		write(serial_port, "1", 1);
+		write(serial_port, index_music, 2);
+		free(index_music);
 	}
 	/*Neu dap an nhan duoc o day la sai*/
 	else
@@ -232,7 +227,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "0", 1);
-		write(serial_port, "12", 2);
+		write(serial_port, "00", 2);
 	}
 
 	/*reset de chon "cau hoi" moi*/

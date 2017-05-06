@@ -60,13 +60,14 @@
     while(!Serial5.available()){}
 
     /*Neu cp du lieu den thi "get" */
-    while(Serial5.available())
+      unsigned long thoi_gian_khoi_dau = millis();
+    byte i = 0;
+    while( (millis() - thoi_gian_khoi_dau ) < 10 )
     {
-      /*Du lieu mac dinh la 3*/
-      data[0] = Serial5.read();
-      data[1] = Serial5.read();
-      data[2] = Serial5.read();
-      break;
+      if(Serial5.available())
+      {
+        
+      }
     }
 
     result = data[0] - 48;
