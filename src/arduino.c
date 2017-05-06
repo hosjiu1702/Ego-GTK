@@ -73,9 +73,14 @@
     index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
 
     #ifdef __DEBUG__
+      Serial.println(data[0]);
+      Serial.println(data[1]);
       Serial.println(data[2]);
+      Serial.println(result);
+      Serial.println(index_music);
     #endif
 
+    /*Phat nhac (dung - sai)*/
     /*Gia dinh la se choi nhac o day*/
     delay(3000);
 }

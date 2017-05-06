@@ -208,7 +208,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		if(sound_id > 9)
 		{
-			char *index_music = (char *)malloc(2*sizeof(char));
+			char *index_music = (char *)malloc(3*sizeof(char));
 			sprintf(index_music, "%d", sound_id);
 			write(serial_port, index_music, 3);
 			free(index_music);
@@ -216,7 +216,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		
 		else
 		{
-			char *index_music = (char *)malloc(sizeof(char));
+			char *index_music = (char *)malloc(2*sizeof(char));
 			sprintf(index_music, "%d", sound_id);
 			write(serial_port, index_music, 2);
 			free(index_music);
