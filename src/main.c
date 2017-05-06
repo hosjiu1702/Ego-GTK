@@ -259,6 +259,9 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	/*reset de chon "cau hoi" moi*/
 	g_timeout_add(2000, delete_func, NULL);
 
+	/*An window_1*/
+	gtk_widget_hide(GTK_WIDGET(window_default));
+
 	/*KHONG XOA VI CON DE HIEN THI LAN SAU*/
 	/*Xoa "cua so dap an"*/
 	//gtk_widget_destroy(GTK_WIDGET(window));
