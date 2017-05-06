@@ -206,6 +206,9 @@ void show_result(GtkWidget *widget, gpointer user_data)
   		char *index_music = (char *)malloc(2*sizeof(char));
   		sprintf(index_music, "%d", sound_id);
 
+  		/*notification for arduino*/
+  		write(serial_port, "o", 1);
+
 		/*Gui tin hieu DUNG den arduino*/
 		write(serial_port, "1", 1);
 		
@@ -255,7 +258,6 @@ transfer_uart(gpointer user_data)
 				/*Gia tri nay tu 1->6 (thuc te la ma ASCII)*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
 				pressed_button_value = pressed_button_value - 48;
-				g_print("%d\n", pressed_button_value);
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));

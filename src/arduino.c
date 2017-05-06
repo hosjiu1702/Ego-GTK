@@ -24,7 +24,7 @@
 
 
   //TMRpcm tmrpcm;
-
+bool is_wait = true;
   byte value;   // gia tri global cua nut nhan
   unsigned char result;
   unsigned char index_music;
@@ -47,7 +47,7 @@
   void loop() {
 
     /*Chua nhan nut thi ko lam gi ca*/
-    while(!isPress())
+    while(!isPress()) 
     {
     }
 
@@ -55,22 +55,22 @@
     send_button_value(value);
 
     byte i = 0;
-    bool out = false;
-    while(1)
+    while(is_wait)
     {
-      if(Serial5.available())
+      while(Serial5.available() > 0)
       {
         Serial.println(Serial5.read());
         i++;
         if(i == 3)
         {
-          out = true;
+          is_wait = false;
+          break;
         }
       }
-      if(out == true)
-        break;
     }
+
     Serial.println(".");
+
 }
 
   byte read_button(byte analog_pin)
