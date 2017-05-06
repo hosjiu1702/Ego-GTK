@@ -225,11 +225,11 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*Gui tin hieu DUNG den arduino*/
 		write(serial_port, sendingData, 3);
 		
-		g_print("3");
 		/*gui sound-id tuong ung voi image*/
 		//write(serial_port, index_music, strlen(index_music));
 
-			free(sendingData);
+		g_print("3");
+		free(sendingData);
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
 	}
@@ -244,7 +244,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "000", 3);
 
-		g_print("5");
+		g_print("4");
 		//write(serial_port, "00", 2);
 
 		/*Tam dung 3s*/
