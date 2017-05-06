@@ -229,7 +229,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*gui sound-id tuong ung voi image*/
 		//write(serial_port, index_music, strlen(index_music));
 
-			free(index_music);
+			free(sendingData);
 		/*Tam dung 3s*/
 		//g_usleep(3000000);
 	}
