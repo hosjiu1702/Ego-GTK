@@ -223,7 +223,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
   		g_print("2");
 		/*Gui tin hieu DUNG den arduino*/
-		write(serial_port, "123", 3);
+		write(serial_port, "1", 1);
 		
 		g_print("3");
 		/*gui sound-id tuong ung voi image*/
@@ -242,7 +242,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		g_print("4");
 		/*Gui tin hieu SAI den arduino*/
-		write(serial_port, "045", 3);
+		write(serial_port, "0", 1);
 
 		g_print("5");
 		write(serial_port, "00", 2);
