@@ -208,10 +208,16 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		if(sound_id > 9)
 		{
-			char *index_music = (char *)malloc(2*sizeof(char));
-			sprintf(index_music, "%d", sound_id);
-			write(serial_port, index_music, 2);
-			free(index_music);
+			gint chuc_sound_id = sound_id / 10;
+			char *number = (char *)malloc(sizeof(char));
+			sprintf(number, "%d", chuc_sound_id);
+			write(serial_port, number, 1);
+
+			gint don_vi_sound_id = sound_id % 10;
+			sprintf(number, "%d", don_vi_sound_id);
+			write(serial_port, number, 1);
+
+			free(number);
 		}
 		
 		else
