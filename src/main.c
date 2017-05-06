@@ -232,6 +232,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "0", 1);
+		write(serial_port, "12", 2);
 	}
 
 	/*reset de chon "cau hoi" moi*/
