@@ -200,9 +200,6 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		g_slice_free(Button, &arr_button[i]);
 */
 
-	/*An window_1*/
-	gtk_widget_hide(GTK_WIDGET(window_default));
-
 	/*Lay dap an cua user*/
 	gint *your_answer = (gint *)user_data;
 
