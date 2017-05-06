@@ -209,6 +209,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	/*index of music sound fie (.wav)*/
 	gint sound_id = result_img_id;
 
+	g_print(result_button_id);
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
@@ -283,7 +284,7 @@ transfer_uart(gpointer user_data)
 				/*Gia tri nay tu 1->6 (thuc te la ma ASCII)*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
 				pressed_button_value = pressed_button_value - 48;
-				g_print("\n%d", pressed_button_value);
+				//g_print("\n%d", pressed_button_value);
 							
 				/* Gia lap su kien "clicked" voi button tuong ung*/
 				gtk_button_clicked(GTK_BUTTON(arr_button[pressed_button_value-1]->button));
