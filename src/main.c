@@ -392,5 +392,7 @@ delete_func(gpointer user_data)
 
 	is_waiting_for_press_button = true;
 
+	i = 0;
+
 	return G_SOURCE_REMOVE;
 }
