@@ -196,6 +196,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	g_print("gia tri nut nhan cua user: %d\n", *your_answer);
 	g_print("gia tri nut nhan cua result: %d\n", result_button_id);
 	g_print("DAP AN: %d\n", result_img_id);
+	
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
@@ -203,26 +204,24 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
-		/*xu ly de gui index music*/
-  		char *index_music = (char *)malloc(2*sizeof(char));
-  		sprintf(index_music, "%d", sound_id);
-
-		/*Gui tin hieu DUNG den arduino*/
 		write(serial_port, "1", 1);
-		
-		if(strlen(index_music) == 2)
+
+		if(sound_id > 9)
 		{
-			/*gui sound-id tuong ung voi image*/
+			char *index_music = (char *)malloc(2*sizeof(char));
+			sprintf(index_music, "%d", sound_id);
 			write(serial_port, index_music, 2);
 			free(index_music);
 		}
+		
 		else
 		{
-			char *temp = (char *)malloc(2*sizeof(char));
-			sprintf(temp, "%d0", sound_id);
-			write(serial_port, temp, 2);
-			free(temp);
+			char *index_music = (char *)malloc(sizeof(char));
+			sprintf(index_music, "%d", sound_id);
+			write(serial_port, index_music, 1);
+			free(index_music);
 		}
+
 	}
 	/*Neu dap an nhan duoc o day la sai*/
 	else
@@ -232,7 +231,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
 		/*Gui tin hieu SAI den arduino*/
-		write(serial_port, "000", 3);
+		write(serial_port, "0", 1);
 	}
 
 	/*reset de chon "cau hoi" moi*/

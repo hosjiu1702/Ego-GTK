@@ -73,7 +73,7 @@
     index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
 
     #ifdef __DEBUG__
-      Serial.println(data[1]);
+      Serial.println(data[2]);
     #endif
 
     /*Gia dinh la se choi nhac o day*/
