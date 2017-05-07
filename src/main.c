@@ -54,7 +54,7 @@ gboolean transfer_uart(gpointer);
 void destroy_window_default(gpointer);
 void set_image_random();
 gboolean delete_func(gpointer);
-void Swap(gint &a, gint &b);
+void Swap(gint*, gint*);
 
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
 /* 			dung de hien thi window_1 		*/
@@ -314,7 +314,7 @@ void set_image_random()
 	gint j;
 	for(j=random_index; j<current_max_index; j++)
 	{
-		Swap(array_image_id[j], array_image_id[j+1]);
+		Swap(&array_image_id[j], &array_image_id[j+1]);
 	}
 
 	current_max_index = current_max_index - 1;
@@ -341,7 +341,7 @@ void set_image_random()
 				gint p;
 				for(p=button_index; p<current_max_index_for_button; p++)
 				{
-					Swap(array_image_id_for_button[p], array_image_id_for_button[p+1]);
+					Swap(&array_image_id_for_button[p], &array_image_id_for_button[p+1]);
 				}
 				current_max_index_for_button = current_max_index_for_button - 1;
 			}
@@ -386,10 +386,10 @@ delete_func(gpointer user_data)
 	return G_SOURCE_REMOVE;
 }
 
-void Swap(gint &a, gint &b)
+void Swap(gint *a, gint *a)
 {
 	gint temp;
-	temp = a;
-	a = b;
-	b = temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
