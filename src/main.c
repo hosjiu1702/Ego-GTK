@@ -386,7 +386,7 @@ delete_func(gpointer user_data)
 	return G_SOURCE_REMOVE;
 }
 
-void Swap(gint *a, gint *a)
+void Swap(gint *a, gint *b)
 {
 	gint temp;
 	temp = *a;
