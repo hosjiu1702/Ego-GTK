@@ -20,7 +20,7 @@ enum
 	true
 };
 
-const gint IMAGE_MAX_INDEX = 83;
+gint IMAGE_MAX_INDEX = 83;
 static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
