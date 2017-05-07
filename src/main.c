@@ -20,7 +20,7 @@ enum
 	true
 };
 
-const gint IMAGE_MAX_COUNT = 83;
+const gint IMAGE_MAX_INDEX = 83;
 static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
@@ -219,15 +219,14 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		/*Thiet lap anh tick_icon cho image - Fullscreen*/
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
-
+		
+		char *index_music = (char *)malloc(2*sizeof(char));
 		if(sound_id > 9)
-		{
-			char *index_music = (char *)malloc(2*sizeof(char));
+		{	
 			sprintf(index_music, "%d", sound_id);
 		}
 		else
 		{
-			char *index_music = (char *)malloc(2*sizeof(char));
 			sprintf(index_music, "%d0", sound_id);
 		}
 		write(serial_port, "1", 1);
