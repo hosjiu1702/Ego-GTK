@@ -24,7 +24,6 @@ const gint IMAGE_MAX_COUNT = 83;
 static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
-gint img_id_not_use[83] = {-1};
 
 /*---------------------------------------*/
 gchar *button_glade_id[6];
@@ -40,6 +39,10 @@ Button *arr_button[6];
 /*---------------------*/
 gboolean is_waiting_for_press_button = false;
 gint current_max_index = IMAGE_MAX_INDEX - 1;
+
+/*Mang dung luu tru "id" cua file anh va am thanh*/
+gint array_image_id[IMAGE_MAX_INDEX];
+gint array_image_id_for_button[IMAGE_MAX_INDEX];
 
 void on_window_1_destroy();
 void show_result (GtkWidget*, gpointer);
@@ -101,10 +104,6 @@ int main(int argc, char *argv[])
 	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
 
 		/*FUNCTION FOR RANDOM IMAGE*/
-	
-	/*Mang dung luu tru "id" cua file anh va am thanh*/
-	gint array_image_id[IMAGE_MAX_INDEX];
-	gint array_image_id_for_button[IMAGE_MAX_INDEX];
 
 	/*Lap de gan cac tri "id" cua image vao trong mang
 	 * Duoc danh so tu 0 */
@@ -360,7 +359,7 @@ void set_image_random()
 		{
 			gchar path_for_button[50];
 			sprintf(path_for_button, "res/animals/%d.png", arr_button_index[z++]);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[m]->image), path_for_button)
+			gtk_image_set_from_file(GTK_IMAGE(arr_button[m]->image), path_for_button);
 		}
 	}
 }
