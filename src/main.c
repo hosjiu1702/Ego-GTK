@@ -309,6 +309,7 @@ void set_image_random()
 		current_max_index = IMAGE_MAX_INDEX - 1;
 
 	random_index = g_random_int_range(0, current_max_index + 1);
+	g_print("random_index: %d\n", random_index);
 
 	/* Sap xep lai mang array_image_id[] */
 	gint j;
@@ -316,6 +317,7 @@ void set_image_random()
 	{
 		Swap(&array_image_id[j], &array_image_id[j+1]);
 	}
+	g_print("array_image_id[82]: %d\n", array_image_id[82]);
 
 	current_max_index = current_max_index - 1;
 
