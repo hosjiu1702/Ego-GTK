@@ -3,7 +3,7 @@
   //#include <TMRpcm.h>
   //#include <SPI.h>
 
-  #define __DEBUG__ __DEBUG__
+  //#define __DEBUG__ __DEBUG__
 
   #define SPEAKER_PIN 9
 
@@ -66,7 +66,7 @@
     {
       if(Serial5.available())
       {
-        
+        data[i++] = Serial5.read();
       }
     }
 
@@ -74,9 +74,6 @@
     index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
 
     #ifdef __DEBUG__
-      Serial.println(data[0]);
-      Serial.println(data[1]);
-      Serial.println(data[2]);
       Serial.println(result);
       Serial.println(index_music);
     #endif
