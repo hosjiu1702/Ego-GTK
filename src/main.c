@@ -310,6 +310,8 @@ void set_image_random()
 
 	/*Chon ngau nhien mot chi so cua mang, 0 -> 82 */
 	random_index = g_random_int_range(0, current_max_index + 1);
+	g_print("%d\n", random_index);
+	g_print("%d\n", array_image_id[random_index]);
 
 	/* Sap xep lai mang array_image_id[] */
 	gint j;
