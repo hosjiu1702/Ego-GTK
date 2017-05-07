@@ -5,6 +5,8 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
+#define IMAGE_MAX_INDEX 83
+
 typedef struct _Button Button;
 
 struct _Button
@@ -20,7 +22,7 @@ enum
 	true
 };
 
-gint IMAGE_MAX_INDEX = 83;
+
 static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
