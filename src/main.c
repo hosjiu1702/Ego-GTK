@@ -229,7 +229,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		}
 		else
 		{
-			sprintf(index_music, "%d0", sound_id);
+			sprintf(index_music, "0%d", sound_id);
 		}
 		write(serial_port, "1", 1);
 		write(serial_port, index_music, 2);
@@ -308,9 +308,8 @@ void set_image_random()
 	if(current_max_index < 0)
 		current_max_index = IMAGE_MAX_INDEX - 1;
 
+	/*Chon ngau nhien mot chi so cua mang, 0 -> 82 */
 	random_index = g_random_int_range(0, current_max_index + 1);
-	g_print("random_index: %d\n", random_index);
-	g_print("Before: array_image_id[random_index]: %d\n", array_image_id[random_index]);
 
 	/* Sap xep lai mang array_image_id[] */
 	gint j;
@@ -318,11 +317,11 @@ void set_image_random()
 	{
 		Swap(&array_image_id[j], &array_image_id[j+1]);
 	}
-	g_print("After: array_image_id[82]: %d\n", array_image_id[82]);
 
 	current_max_index = current_max_index - 1;
 
 	sprintf(path, "res/animals/%d.png", array_image_id[random_index]);
+	g_print("%s\n", path);
 	gtk_image_set_from_file(GTK_IMAGE(image_default), path);
 	result_img_id = array_image_id[random_index];
 
