@@ -1,29 +1,28 @@
-  //#include <SD.h>
+  #include <SD.h>
   #define SD_ChipSelectPin 4
-  //#include <TMRpcm.h>
-  //#include <SPI.h>
+  #include <TMRpcm.h>
+  #include <SPI.h>
 
-  #define __DEBUG__ __DEBUG__
+  //#define __DEBUG__ __DEBUG__
 
   #define SPEAKER_PIN 9
 
   #define ANALOG_PIN A0
 
-  #define BUTTON_1_ANALOG_MIN_VALUE -1
-  #define BUTTON_1_ANALOG_MAX_VALUE 1000
-  #define BUTTON_2_ANALOG_MIN_VALUE 1900
-  #define BUTTON_2_ANALOG_MAX_VALUE 2200
-  #define BUTTON_3_ANALOG_MIN_VALUE 2600
-  #define BUTTON_3_ANALOG_MAX_VALUE 2900
-  #define BUTTON_4_ANALOG_MIN_VALUE 3000
-  #define BUTTON_4_ANALOG_MAX_VALUE 3100
-  #define BUTTON_5_ANALOG_MIN_VALUE 3200
-  #define BUTTON_5_ANALOG_MAX_VALUE 3400
-  #define BUTTON_6_ANALOG_MIN_VALUE 3500
-  #define BUTTON_6_ANALOG_MAX_VALUE 3600
+#define BUTTON_1_ANALOG_MIN_VALUE -3
+#define BUTTON_1_ANALOG_MAX_VALUE 3
+#define BUTTON_2_ANALOG_MIN_VALUE 100
+#define BUTTON_2_ANALOG_MAX_VALUE 630
+#define BUTTON_3_ANALOG_MIN_VALUE 660
+#define BUTTON_3_ANALOG_MAX_VALUE 700
+#define BUTTON_4_ANALOG_MIN_VALUE 765
+#define BUTTON_4_ANALOG_MAX_VALUE 785
+#define BUTTON_5_ANALOG_MIN_VALUE 815
+#define BUTTON_5_ANALOG_MAX_VALUE 835
+#define BUTTON_6_ANALOG_MIN_VALUE 870
+#define BUTTON_6_ANALOG_MAX_VALUE 890
 
-
-  //TMRpcm tmrpcm;
+  TMRpcm speaker;
   byte value;   // gia tri global cua nut nhan
   unsigned char result;
   unsigned char index_music;
@@ -32,13 +31,11 @@
   /*-----------------------------------------*/
   void setup() {
     Serial.begin(9600);
-    Serial5.begin(9600);
+    //Serial5.begin(9600);
     pinMode(ANALOG_PIN, INPUT);
-    //pinMode(13, OUTPUT);
-    //digitalWrite(13, LOW);
 
     /*Ham nay tam thoi bi xoa trong qua trinh phat trien - THEM VAO SAU*/
-    //init_module_SD_Card();
+    init_module_SD_Card();
   }
 
 
@@ -46,7 +43,7 @@
   void loop() {
 
     /*Khi chua nhan duoc tin hieu thi pause*/
-    while(Serial5.read() != 'o'){}
+    while(Serial.read() != 'o'){}
 
     /*Cho user nhan nut*/
     while(!isPress()) 
@@ -57,27 +54,38 @@
     send_button_value(value);
 
     /*Khi chua nhan duoc du lieu thi pause*/
-    while(!Serial5.available()){}
+    while(!Serial.available()){}
 
     /*Neu cp du lieu den thi "get" */
-    while(Serial5.available())
+      unsigned long thoi_gian_khoi_dau = millis();
+    byte i = 0;
+    while( (millis() - thoi_gian_khoi_dau ) < 10 )
     {
-      /*Du lieu mac dinh la 3*/
-      data[0] = Serial5.read();
-      data[1] = Serial5.read();
-      data[2] = Serial5.read();
-      break;
+      if(Serial.available())
+      {
+        data[i++] = Serial.read();
+      }
     }
 
     result = data[0] - 48;
     index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
 
     #ifdef __DEBUG__
-      Serial.println(data[1]);
+      Serial.println(result);
+      Serial.println(index_music);
     #endif
 
-    /*Gia dinh la se choi nhac o day*/
-    delay(3000);
+    /*Phat nhac (dung - sai)*/
+    if(result)
+    {
+      speaker.play("dung.wav");
+      delay(1000);
+    }
+    else
+    {
+      speaker.play("sai.wav");
+      delay(1000);
+    }
 }
 
   byte read_button(byte analog_pin)
@@ -106,8 +114,8 @@
 
   int send_button_value(byte button_value)
   {
-    
-    Serial5.print(button_value); // DU LIEU duoc gui la ASCII
+
+    Serial.print(button_value); // DU LIEU duoc gui la ASCII
     return 1;
   }
 
@@ -124,3 +132,25 @@
     /*con neu khong thi tra false*/
     return false;
   }
+
+void init_module_SD_Card()
+{
+  /*DUNG DE KHOI TAO CHO VIEC PHAT AM THANH*/
+  tmrpcm.speakerPin = 9;
+  SD.begin(SD_ChipSelectPin)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

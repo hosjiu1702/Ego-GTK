@@ -5,6 +5,8 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
+#define IMAGE_MAX_INDEX 83
+
 typedef struct _Button Button;
 
 struct _Button
@@ -20,11 +22,10 @@ enum
 	true
 };
 
-const gint IMAGE_MAX_COUNT = 83;
+
 static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
-gint img_id_not_use[83] = {-1};
 
 /*---------------------------------------*/
 gchar *button_glade_id[6];
@@ -39,6 +40,11 @@ Button *arr_button[6];
 /*---------------------------------------*/
 /*---------------------*/
 gboolean is_waiting_for_press_button = false;
+gint current_max_index = IMAGE_MAX_INDEX - 1;
+
+/*Mang dung luu tru "id" cua file anh va am thanh*/
+gint array_image_id[IMAGE_MAX_INDEX];
+gint array_image_id_for_button[IMAGE_MAX_INDEX];
 
 void on_window_1_destroy();
 void show_result (GtkWidget*, gpointer);
@@ -48,6 +54,7 @@ gboolean transfer_uart(gpointer);
 void destroy_window_default(gpointer);
 void set_image_random();
 gboolean delete_func(gpointer);
+void Swap(gint*, gint*);
 
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
 /* 			dung de hien thi window_1 		*/
@@ -98,7 +105,18 @@ int main(int argc, char *argv[])
 	window_result = GTK_WIDGET(gtk_builder_get_object(builder, "window_2"));
 	image_result = GTK_WIDGET(gtk_builder_get_object(builder, "image_result"));
 
-	/*FUNCTION FOR RANDOM IMAGE*/
+		/*FUNCTION FOR RANDOM IMAGE*/
+
+	/*Lap de gan cac tri "id" cua image vao trong mang
+	 * Duoc danh so tu 0 */
+	gint a;
+	for(a=0; a<IMAGE_MAX_INDEX; a++)
+	{
+		array_image_id[a] = a+1;
+		array_image_id_for_button[a] = a+1;
+	}
+
+
 	set_image_random();
 
 	/*Ket noi tin hieu cho cac button*/
@@ -196,33 +214,26 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	g_print("gia tri nut nhan cua user: %d\n", *your_answer);
 	g_print("gia tri nut nhan cua result: %d\n", result_button_id);
 	g_print("DAP AN: %d\n", result_img_id);
+	
 	/*Neu dap an nhan duoc o day la dung*/
 	if(*your_answer == result_button_id)
 	{
 		/*Thiet lap anh tick_icon cho image - Fullscreen*/
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
-
-		/*xu ly de gui index music*/
-  		char *index_music = (char *)malloc(2*sizeof(char));
-  		sprintf(index_music, "%d", sound_id);
-
-		/*Gui tin hieu DUNG den arduino*/
-		write(serial_port, "1", 1);
 		
-		if(strlen(index_music) == 2)
-		{
-			/*gui sound-id tuong ung voi image*/
-			write(serial_port, index_music, 2);
-			free(index_music);
+		char *index_music = (char *)malloc(2*sizeof(char));
+		if(sound_id > 9)
+		{	
+			sprintf(index_music, "%d", sound_id);
 		}
 		else
 		{
-			char *temp = (char *)malloc(2*sizeof(char));
-			sprintf(temp, "%d0", sound_id);
-			write(serial_port, temp, 2);
-			free(temp);
+			sprintf(index_music, "0%d", sound_id);
 		}
+		write(serial_port, "1", 1);
+		write(serial_port, index_music, 2);
+		free(index_music);
 	}
 	/*Neu dap an nhan duoc o day la sai*/
 	else
@@ -232,7 +243,8 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
 		/*Gui tin hieu SAI den arduino*/
-		write(serial_port, "000", 3);
+		write(serial_port, "0", 1);
+		write(serial_port, "00", 2);
 	}
 
 	/*reset de chon "cau hoi" moi*/
@@ -290,88 +302,69 @@ transfer_uart(gpointer user_data)
  */
 void set_image_random()
 {
-	/*Chon mot trong 6 nut de dua DAP AN vao*/
+	gchar path[50];
+	gint random_index;
+
+	if(current_max_index < 0)
+		current_max_index = IMAGE_MAX_INDEX - 1;
+
+	/*Chon ngau nhien mot chi so cua mang, 0 -> 82 */
+	random_index = g_random_int_range(0, current_max_index + 1);
+	g_print("%d\n", random_index);
+	g_print("%d\n", array_image_id[random_index]);
+
+	/* Sap xep lai mang array_image_id[] */
+	gint j;
+	for(j=random_index; j<current_max_index; j++)
+	{
+		Swap(&array_image_id[j], &array_image_id[j+1]);
+	}
+
+	current_max_index = current_max_index - 1;
+
+	sprintf(path, "res/animals/%d.png", array_image_id[random_index]);
+	g_print("%s\n", path);
+	gtk_image_set_from_file(GTK_IMAGE(image_default), path);
+	result_img_id = array_image_id[random_index];
+
 	result_button_id = g_random_int_range(1,7);
 
-	/*Chon mot anh ngau nhien de hien thi*/
-	gboolean same_image = FALSE;
-	do
+	gint n;
+	gint arr_button_index[5];
+	gint current_max_index_for_button = IMAGE_MAX_INDEX - 1;
+	for(n=0; n<5; n++)
 	{
-		/*Chon ngau nhien mot tam anh (it's id)*/
-		result_img_id = g_random_int_range(1, IMAGE_MAX_COUNT);
-		
-		gint i;
-		for(i=0; i<IMAGE_MAX_COUNT; i++)
+		gboolean is_same = true;
+		while(is_same)
 		{
-			if( (img_id_not_use[i] != -1) && (img_id_not_use[i] == result_img_id) )
+			gint button_index = g_random_int_range(0, current_max_index_for_button + 1);
+			if(array_image_id_for_button[button_index] != array_image_id[random_index])
 			{
-				same_image = TRUE;
-				break;
+				arr_button_index[n] = array_image_id_for_button[button_index];
+				is_same = false;
+				gint p;
+				for(p=button_index; p<current_max_index_for_button; p++)
+				{
+					Swap(&array_image_id_for_button[p], &array_image_id_for_button[p+1]);
+				}
+				current_max_index_for_button = current_max_index_for_button - 1;
 			}
 		}
 	}
-	while(same_image);
 
-	gint j;
-	for(j=0; j<IMAGE_MAX_COUNT; j++)
+	gint m;
+	gint z = 0;
+	for(m=0; m<6; m++)
 	{
-		if(img_id_not_use[j] == -1)
+		if(m == (result_button_id-1))
 		{
-			img_id_not_use[j] = result_img_id;
-			break;
+			gtk_image_set_from_file(GTK_IMAGE(arr_button[m]->image), path);
 		}
-	}	
-
-	/*load anh vao cac button va image_default*/
-	gint images_not_allowed[5] = {-1};
-	gint o;
-	for(o=1; o<=6; o++)
-	{
-		gchar path[50];
-
-		/* Neu la nut dap an thi gan tam anh dap an vao de hien thi
-		  va hien thi luon origin image */
-		if( o == result_button_id )
-		{
-			sprintf(path, "res/animals/%d.png", result_img_id);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
-			gtk_image_set_from_file(GTK_IMAGE(image_default), path);
-		}
-
-
-		/*Gan hinh ngau nhien cho cac button*/
 		else
 		{
-			gint rand_img;
-			gboolean same_img = FALSE;
-
-			do
-			{
-				rand_img = g_random_int_range(1,IMAGE_MAX_COUNT);
-				gint j;
-				for(j=0; j<5; j++)
-				{
-					if( (rand_img == images_not_allowed[j]) || (rand_img == result_img_id) )
-					{
-						same_img = TRUE;
-						break;
-					}
-				}
-			}
-			while(same_img);
-				
-			gint k;
-			for(k=0; k<5; k++)
-			{
-				if(images_not_allowed[k] == -1)
-				{
-					images_not_allowed[k] = rand_img;
-					break;
-				}
-			}
-
-			sprintf(path, "res/animals/%d.png", rand_img);
-			gtk_image_set_from_file(GTK_IMAGE(arr_button[o-1]->image), path);
+			gchar path_for_button[50];
+			sprintf(path_for_button, "res/animals/%d.png", arr_button_index[z++]);
+			gtk_image_set_from_file(GTK_IMAGE(arr_button[m]->image), path_for_button);
 		}
 	}
 }
@@ -395,4 +388,12 @@ delete_func(gpointer user_data)
 	i = 0;
 
 	return G_SOURCE_REMOVE;
+}
+
+void Swap(gint *a, gint *b)
+{
+	gint temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
