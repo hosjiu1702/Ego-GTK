@@ -52,6 +52,7 @@
 
     /*Neu nut duoc nhan roi thi gui gia tri di*/
     send_button_value(value);
+    Serial.flush();
 
     /*Khi chua nhan duoc du lieu thi pause*/
     while(!Serial.available()){}
@@ -67,6 +68,8 @@
       }
     }
 
+    Serial.flush();
+
     result = data[0] - 48;
     index_music = (data[1] - 48)*10 + (data[2] - 48)*1;
 
@@ -79,12 +82,14 @@
     if(result)
     {
       speaker.play("dung.wav");
-      delay(1000);
+      delay(2000);
+      digitalWrite(speaker.speakerPin, LOW);
     }
     else
     {
       speaker.play("sai.wav");
-      delay(1000);
+      delay(2000);
+      digitalWrite(speaker.speakerPin, LOW);
     }
 }
 
@@ -136,8 +141,8 @@
 void init_module_SD_Card()
 {
   /*DUNG DE KHOI TAO CHO VIEC PHAT AM THANH*/
-  tmrpcm.speakerPin = 9;
-  SD.begin(SD_ChipSelectPin)
+  speaker.speakerPin = 9;
+  SD.begin(SD_ChipSelectPin);
 }
 
 
