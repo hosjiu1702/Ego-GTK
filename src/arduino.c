@@ -5,24 +5,16 @@
 
   //#define __DEBUG__ __DEBUG__
 
-  #define SPEAKER_PIN 9
+#define SPEAKER_PIN 9
 
-  #define ANALOG_PIN A0
+#define BUTTON_1 2
+#define BUTTON_2 3
+#define BUTTON_3 5
+#define BUTTON_4 6
+#define BUTTON_5 7
+#define BUTTON_6 8
 
-#define BUTTON_1_ANALOG_MIN_VALUE -3
-#define BUTTON_1_ANALOG_MAX_VALUE 3
-#define BUTTON_2_ANALOG_MIN_VALUE 100
-#define BUTTON_2_ANALOG_MAX_VALUE 630
-#define BUTTON_3_ANALOG_MIN_VALUE 660
-#define BUTTON_3_ANALOG_MAX_VALUE 700
-#define BUTTON_4_ANALOG_MIN_VALUE 765
-#define BUTTON_4_ANALOG_MAX_VALUE 785
-#define BUTTON_5_ANALOG_MIN_VALUE 815
-#define BUTTON_5_ANALOG_MAX_VALUE 835
-#define BUTTON_6_ANALOG_MIN_VALUE 870
-#define BUTTON_6_ANALOG_MAX_VALUE 890
-
-  TMRpcm speaker;
+  TMRpcm arduino;
   byte value;   // gia tri global cua nut nhan
   unsigned char result;
   unsigned char index_music;
@@ -31,10 +23,7 @@
   /*-----------------------------------------*/
   void setup() {
     Serial.begin(9600);
-    //Serial5.begin(9600);
-    pinMode(ANALOG_PIN, INPUT);
-
-    /*Ham nay tam thoi bi xoa trong qua trinh phat trien - THEM VAO SAU*/
+    init_button();
     init_module_SD_Card();
   }
 
@@ -81,40 +70,36 @@
     /*Phat nhac (dung - sai)*/
     if(result)
     {
-      speaker.play("dung.wav");
-      delay(2000);
-      digitalWrite(speaker.speakerPin, LOW);
+      char path[20];
+      sprintf(path, "%d.wav", index_music);
+      arduino.play(path);
+      delay(3000);
+      digitalWrite(SPEAKER_PIN, LOW);
     }
     else
     {
-      speaker.play("sai.wav");
-      delay(2000);
-      digitalWrite(speaker.speakerPin, LOW);
+      arduino.play("sai.wav");
+      delay(3000);
+      digitalWrite(SPEAKER_PIN, LOW);
     }
 }
 
-  byte read_button(byte analog_pin)
+  byte read_button()
   {
-    int analog_value = analogRead(analog_pin);
-    //Serial.println(analog_value);
-    byte button_value = 0;
-
-    if ( (analog_value > BUTTON_1_ANALOG_MIN_VALUE) && (analog_value < BUTTON_1_ANALOG_MAX_VALUE) )
-      button_value = 1;
-    else if ( (analog_value > BUTTON_2_ANALOG_MIN_VALUE) && (analog_value < BUTTON_2_ANALOG_MAX_VALUE) )
-      button_value = 2;
-    else if ( (analog_value > BUTTON_3_ANALOG_MIN_VALUE) && (analog_value < BUTTON_3_ANALOG_MAX_VALUE) )
-      button_value = 3;
-    else if ( (analog_value > BUTTON_4_ANALOG_MIN_VALUE) && (analog_value < BUTTON_4_ANALOG_MAX_VALUE) )
-      button_value = 4;
-    else if ( (analog_value > BUTTON_5_ANALOG_MIN_VALUE) && (analog_value < BUTTON_5_ANALOG_MAX_VALUE) )
-      button_value = 5;
-    else if ( (analog_value > BUTTON_6_ANALOG_MIN_VALUE) && (analog_value < BUTTON_6_ANALOG_MAX_VALUE) )
-      button_value = 6;
-    else
-      button_value = 0;
-
-    return button_value;
+    if(digitalRead(BUTTON_1) == LOW)
+      return 1;
+    if(digitalRead(BUTTON_2) == LOW)
+      return 2;
+    if(digitalRead(BUTTON_3) == LOW)
+      return 3;
+    if(digitalRead(BUTTON_4) == LOW)
+      return 4;
+    if(digitalRead(BUTTON_5) == LOW)
+      return 5;
+    if(digitalRead(BUTTON_6) == LOW)
+      return 6;
+    
+    return 0;
   }
 
   int send_button_value(byte button_value)
@@ -126,7 +111,7 @@
 
   bool isPress()
   {
-    byte button_value = read_button(ANALOG_PIN);
+    byte button_value = read_button();
     /*Neu nut nao do duoc nhan*/
     if (button_value != 0)
     {
@@ -141,11 +126,19 @@
 void init_module_SD_Card()
 {
   /*DUNG DE KHOI TAO CHO VIEC PHAT AM THANH*/
-  speaker.speakerPin = 9;
+  arduino.speakerPin = 9;
   SD.begin(SD_ChipSelectPin);
 }
 
-
+void init_button()
+{
+    pinMode(BUTTON_1, INPUT_PULLUP);
+    pinMode(BUTTON_2, INPUT_PULLUP);
+    pinMode(BUTTON_3, INPUT_PULLUP);
+    pinMode(BUTTON_4, INPUT_PULLUP);
+    pinMode(BUTTON_5, INPUT_PULLUP);
+    pinMode(BUTTON_6, INPUT_PULLUP);
+}
 
 
 
