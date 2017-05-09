@@ -233,7 +233,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		}
 		else
 		{
-			sprintf(index_music, "0%d0", sound_id);
+			sprintf(index_music, "00%d", sound_id);
 		}
 		write(serial_port, "1", 1);
 		write(serial_port, index_music, 3);
