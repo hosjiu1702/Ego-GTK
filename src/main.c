@@ -22,7 +22,8 @@ enum
 	true
 };
 
-
+gint image_have_sound[34] = {3,5,6,8,9,10,16,17,18,26,27,29,31,33,38,43,66,85,121,147,148,
+							149,150,151,152,153,154,155,156,157,158,159,160,161};
 static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
@@ -55,6 +56,7 @@ void destroy_window_default(gpointer);
 void set_image_random();
 gboolean delete_func(gpointer);
 void Swap(gint*, gint*);
+gboolean is_have_sound(gint);
 
 /*Cac bien con tro nay duoc dung suot chuong trinh*/
 /* 			dung de hien thi window_1 		*/
@@ -219,7 +221,17 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	if(*your_answer == result_button_id)
 	{
 		/*Thiet lap anh tick_icon cho image - Fullscreen*/
-		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
+		if(is_have_sound(result_img_id))
+		{
+			gchar path[50];
+			sprintf(path, "res/%d.png", result_img_id);
+			gtk_image_set_from_file(GTK_IMAGE(image_result), path);	
+		}
+		else
+		{
+			gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png");
+		}
+
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 		
 		char *index_music = (char *)malloc(3*sizeof(char));
@@ -243,7 +255,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	else
 	{
 		/*Hien thi hinh anh sai - Fullscreen*/
-		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png"); //o day moi chi hien thi duoc wrong icon
+		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/wrong_icon.png");
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 
 		/*Gui tin hieu SAI den arduino*/
@@ -398,4 +410,17 @@ void Swap(gint *a, gint *b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
+}
+
+gboolean is_have_sound(gint img_id)
+{
+	gint i;
+	for(i=0; i<34; i++)
+	{
+		if(img_id == image_have_sound[i])
+		{
+			return true;
+		}
+	}
+	return false;
 }
