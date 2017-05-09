@@ -224,7 +224,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		if(is_have_sound(result_img_id))
 		{
 			gchar path[50];
-			sprintf(path, "res/%d.png", result_img_id);
+			sprintf(path, "res/animals/%d.png", result_img_id);
 			gtk_image_set_from_file(GTK_IMAGE(image_result), path);	
 		}
 		else
