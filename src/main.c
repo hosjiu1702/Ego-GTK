@@ -315,15 +315,6 @@ void set_image_random()
 	gtk_image_set_from_file(GTK_IMAGE(image_default), path);
 	result_img_id = array_image_id[random_index];
 
-	/* Sap xep lai mang array_image_id[] */
-	gint j;
-	for(j=random_index; j<current_max_index; j++)
-	{
-		Swap(&array_image_id[j], &array_image_id[j+1]);
-	}
-
-	current_max_index = current_max_index - 1;
-
 	result_button_id = g_random_int_range(1,7);
 
 	gint n;
@@ -364,6 +355,16 @@ void set_image_random()
 			gtk_image_set_from_file(GTK_IMAGE(arr_button[m]->image), path_for_button);
 		}
 	}
+
+	/* Sap xep lai mang array_image_id[] */
+	gint j;
+	for(j=random_index; j<current_max_index; j++)
+	{
+		Swap(&array_image_id[j], &array_image_id[j+1]);
+	}
+
+	current_max_index = current_max_index - 1;
+
 }
 
 gboolean
