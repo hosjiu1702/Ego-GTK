@@ -304,23 +304,16 @@ void set_image_random()
 {
 	gchar path[50];
 	gint random_index;
-	static gint x = 0;
 
 	if(current_max_index < 0)
 		current_max_index = IMAGE_MAX_INDEX - 1;
 
 	/*Chon ngau nhien mot chi so cua mang, 0 -> 82 */
 	random_index = g_random_int_range(0, current_max_index + 1);
-	g_print("%d\n", random_index);
-	g_print("%d\n", array_image_id[random_index]);
 
-	g_print("\n current_max_index: %d", current_max_index);
-	g_print("\nlan loop thu %d", x+1);
-	gint t;
-	for(t=0; t<83; t++)
-	{
-		g_print("%d ", array_image_id[t]);
-	}
+	sprintf(path, "res/animals/%d.png", array_image_id[random_index]);
+	gtk_image_set_from_file(GTK_IMAGE(image_default), path);
+	result_img_id = array_image_id[random_index];
 
 	/* Sap xep lai mang array_image_id[] */
 	gint j;
@@ -329,22 +322,7 @@ void set_image_random()
 		Swap(&array_image_id[j], &array_image_id[j+1]);
 	}
 
-	g_print("\n");
-	gint tt;
-	for(tt=0; tt<83; tt++)
-	{
-		g_print("%d ", array_image_id[tt]);
-	}
-
 	current_max_index = current_max_index - 1;
-
-	g_print("\n current_max_index: %d", current_max_index);
-	g_print("\n********************");
-
-	sprintf(path, "res/animals/%d.png", array_image_id[random_index]);
-	g_print("%s\n", path);
-	gtk_image_set_from_file(GTK_IMAGE(image_default), path);
-	result_img_id = array_image_id[random_index];
 
 	result_button_id = g_random_int_range(1,7);
 
