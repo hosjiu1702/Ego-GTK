@@ -112,6 +112,7 @@ void init_module_SD_Card()
   /*DUNG DE KHOI TAO CHO VIEC PHAT AM THANH*/
   arduino.speakerPin = 9;
   SD.begin(SD_ChipSelectPin);
+  digitalWrite(SPEAKER_PIN, HIGH);
 }
 
 void init_button()
@@ -151,13 +152,16 @@ void play_music_true() // phat nhac khi co tin hieu dung tra ve
       unsigned char Playback[10];
       sprintf(Playback,"%d.wav", index_music);
       arduino.play(Playback);
-      delay(3000);
+      while(arduino.isPlaying())
+      {
+      }
       digitalWrite(SPEAKER_PIN, LOW);
   }
   else
   {
      arduino.play("dung.wav");
-     delay(2000);
+     while(arduino.isPlaying())
+     {}
      digitalWrite(SPEAKER_PIN, LOW);
   }
 }
@@ -169,7 +173,8 @@ void play_music() // dam nhiem chuc nang phat nhac khi co tin hieu tu raspberry 
   else
   {
     arduino.play("sai.wav");
-    delay(2000);
-    digitalWrite(9,0);
+    while(arduino.isPlaying())
+    {}
+    digitalWrite(SPEAKER_PIN, LOW);
   }
 }

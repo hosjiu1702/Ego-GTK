@@ -264,7 +264,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 	}
 
 	/*reset de chon "cau hoi" moi*/
-	g_timeout_add(2000, delete_func, NULL);
+	g_timeout_add(2500, delete_func, NULL);
 
 	/*An window_1*/
 	gtk_widget_hide(GTK_WIDGET(window_default));
