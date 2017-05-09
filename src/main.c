@@ -312,7 +312,7 @@ void set_image_random()
 	if(current_max_index < 0)
 		current_max_index = IMAGE_MAX_INDEX - 1;
 
-	/*Chon ngau nhien mot chi so cua mang, 0 -> 82 */
+	/*Chon ngau nhien mot chi so cua mang, 0 -> IMAGE_MAX_INDEX */
 	random_index = g_random_int_range(0, current_max_index + 1);
 
 	sprintf(path, "res/animals/%d.png", array_image_id[random_index]);
