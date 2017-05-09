@@ -23,7 +23,7 @@ enum
 };
 
 
-gboolean cont = true;
+static gint i = 0;
 gint serial_port;
 /*-------------------------------------*/
 
@@ -40,7 +40,7 @@ Button *arr_button[6];
 /*---------------------------------------*/
 /*---------------------*/
 gboolean is_waiting_for_press_button = false;
-//gint current_max_index = IMAGE_MAX_INDEX - 1;
+gint current_max_index = IMAGE_MAX_INDEX - 1;
 
 /*Mang dung luu tru "id" cua file anh va am thanh*/
 gint array_image_id[IMAGE_MAX_INDEX];
@@ -263,18 +263,16 @@ transfer_uart(gpointer user_data)
 		if(is_waiting_for_press_button)
 		{
 			/*Gui tin hieu thong bao cho arduino */
-			if(cont)
+			if(i == 0)
 			{
 				write(serial_port, "o", 1);
+				i++;
 			}
+  			
 
 			/*Neu co du lieu den thi doc va phat tin hieu den button widget tuong ung*/
 			if(serialDataAvail(serial_port))
 			{
-				cont = false;
-				/*Cho arduino flush du lieu invalid*/
-				g_usleep(1000);
-
 				/*Gia tri nay tu 1->6 (thuc te la ma ASCII)*/
 				gchar pressed_button_value = (gchar)serialGetchar(serial_port);
 				pressed_button_value = pressed_button_value - 48;
@@ -306,16 +304,23 @@ void set_image_random()
 {
 	gchar path[50];
 	gint random_index;
-	static gint current_max_index = 82;
+	static gint x = 0;
 
 	if(current_max_index < 0)
 		current_max_index = IMAGE_MAX_INDEX - 1;
 
-	/*Chon ngau nhien mot chi so cua mang*/
-	random_index = g_random_int_range(0, current_max_index + 1);	
-	sprintf(path, "res/animals/%d.png", array_image_id[random_index]);
-	gtk_image_set_from_file(GTK_IMAGE(image_default), path);
-	result_img_id = array_image_id[random_index];
+	/*Chon ngau nhien mot chi so cua mang, 0 -> 82 */
+	random_index = g_random_int_range(0, current_max_index + 1);
+	g_print("%d\n", random_index);
+	g_print("%d\n", array_image_id[random_index]);
+
+	g_print("\n current_max_index: %d", current_max_index);
+	g_print("\nlan loop thu %d", x+1);
+	gint t;
+	for(t=0; t<83; t++)
+	{
+		g_print("%d ", array_image_id[t]);
+	}
 
 	/* Sap xep lai mang array_image_id[] */
 	gint j;
@@ -324,7 +329,22 @@ void set_image_random()
 		Swap(&array_image_id[j], &array_image_id[j+1]);
 	}
 
-	current_max_index--;
+	g_print("\n");
+	gint tt;
+	for(tt=0; tt<83; tt++)
+	{
+		g_print("%d ", array_image_id[tt]);
+	}
+
+	current_max_index = current_max_index - 1;
+
+	g_print("\n current_max_index: %d", current_max_index);
+	g_print("\n********************");
+
+	sprintf(path, "res/animals/%d.png", array_image_id[random_index]);
+	g_print("%s\n", path);
+	gtk_image_set_from_file(GTK_IMAGE(image_default), path);
+	result_img_id = array_image_id[random_index];
 
 	result_button_id = g_random_int_range(1,7);
 
@@ -384,7 +404,7 @@ delete_func(gpointer user_data)
 
 	is_waiting_for_press_button = true;
 
-	cont = true;
+	i = 0;
 
 	return G_SOURCE_REMOVE;
 }
