@@ -222,7 +222,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_image_set_from_file(GTK_IMAGE(image_result), "res/tick_icon.png"); //o day moi chi hien thi duoc tick icon
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 		
-		char *index_music = (char *)malloc(2*sizeof(char));
+		char *index_music = (char *)malloc(3*sizeof(char));
 		if(sound_id > 99)
 		{
 			sprintf(index_music, "%d", sound_id);
