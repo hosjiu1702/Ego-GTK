@@ -5,7 +5,7 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
-#define IMAGE_MAX_INDEX 83
+#define IMAGE_MAX_INDEX 161
 
 typedef struct _Button Button;
 
@@ -223,16 +223,20 @@ void show_result(GtkWidget *widget, gpointer user_data)
 		gtk_widget_show_all(GTK_WIDGET(window_result));
 		
 		char *index_music = (char *)malloc(2*sizeof(char));
-		if(sound_id > 9)
-		{	
+		if(sound_id > 99)
+		{
 			sprintf(index_music, "%d", sound_id);
+		}
+		else if(sound_id > 9)
+		{	
+			sprintf(index_music, "0%d", sound_id);
 		}
 		else
 		{
-			sprintf(index_music, "0%d", sound_id);
+			sprintf(index_music, "0%d0", sound_id);
 		}
 		write(serial_port, "1", 1);
-		write(serial_port, index_music, 2);
+		write(serial_port, index_music, 3);
 		free(index_music);
 	}
 	/*Neu dap an nhan duoc o day la sai*/
@@ -244,7 +248,7 @@ void show_result(GtkWidget *widget, gpointer user_data)
 
 		/*Gui tin hieu SAI den arduino*/
 		write(serial_port, "0", 1);
-		write(serial_port, "00", 2);
+		write(serial_port, "000", 3);
 	}
 
 	/*reset de chon "cau hoi" moi*/
