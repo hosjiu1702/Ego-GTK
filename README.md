@@ -1,2 +1,2 @@
 # WeAreOne
-Nơi đóng góp mã nguồn C và giao diện Glade
+A simply game for egocentric children using raspberry and arduino
