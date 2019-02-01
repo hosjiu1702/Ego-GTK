@@ -1,7 +1,6 @@
 # WeAreOne
 _A simply game for **egocentric children** using raspberry and arduino._
 
-**DEMO:**
 [![](http://img.youtube.com/vi/dMcQ25bi3A8/0.jpg)](http://www.youtube.com/watch?v=dMcQ25bi3A8 "")
 ___
 ## Hardware
