@@ -2,10 +2,11 @@
 _A simply game for **egocentric children** using raspberry and arduino._
 
 <p align="center">
-  <str>Demo</str>
+  <a href="http://www.youtube.com/watch?v=dMcQ25bi3A8">Demo</a>
   <br>
   <img src="http://img.youtube.com/vi/dMcQ25bi3A8/0.jpg">
 </p>
+
 ___
 ## Hardware
 ##### 1. Raspberry pi 3 (Version B+)
