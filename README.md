@@ -16,7 +16,7 @@ ___
 ![](https://a.pololu-files.com/picture/0J7808.600x480.jpg?810c5e85aeb9493d9ec9fed8abe68464 "Arduino UNO R3")
 ___
 ## Wiring Diagram
-High level diagram of the Project:
+A High level diagram of the Project:
 ![](https://i.imgur.com/DpxujhA.png)
 ___
 ## Graphics User Interface
