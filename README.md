@@ -1,7 +1,11 @@
 # WeAreOne
 _A simply game for **egocentric children** using raspberry and arduino._
 
-[![](http://img.youtube.com/vi/dMcQ25bi3A8/0.jpg)](http://www.youtube.com/watch?v=dMcQ25bi3A8 "")
+<p align="center">
+  <str>Demo</str>
+  <br>
+  <img src="http://img.youtube.com/vi/dMcQ25bi3A8/0.jpg">
+</p>
 ___
 ## Hardware
 ##### 1. Raspberry pi 3 (Version B+)
