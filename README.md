@@ -1,4 +1,4 @@
-# WeAreOne
+# Ego-GTK
 _A simply game for **egocentric children** using raspberry and arduino._
 
 <p align="center">
